@@ -3,44 +3,6 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
 
-  describe 'GET #index' do
-    let(:questions) { create_list(:question, 3) }
-
-    before { get :index }
-
-    it 'populates array of all questions' do
-      expect(assigns(:questions)).to match_array(questions)
-    end
-
-    it 'renders index view' do
-      expect(response).to render_template :index
-    end
-  end
-
-  describe 'GET #show' do
-    before { get :show, params: { id: question } }
-
-    it 'renders requested question view' do
-      expect(response).to render_template :show
-    end
-  end
-
-  describe 'GET #new' do
-    before { get :new }
-    
-    it 'renders new question view' do
-      expect(response).to render_template :new
-    end
-  end
-
-  describe 'GET #edit' do
-    before { get :edit, params: { id: question } }
-
-    it 'renders edit question view' do
-      expect(response).to render_template :edit
-    end
-  end
-
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves new question to database' do
@@ -49,7 +11,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to show view' do
         post :create, params: { question: attributes_for(:question) }
-        expect(response).to redirect_to assigns(:question)
+        expect(response).to redirect_to assigns(:exposed_question)
       end
     end
 
@@ -69,7 +31,7 @@ RSpec.describe QuestionsController, type: :controller do
     context 'with valid attributes' do
       it 'assigns requested question to @question' do
         patch :update, params: { id: question, question: attributes_for(:question) }
-        expect(assigns(:question)).to eq question
+        expect(assigns(:exposed_question)).to eq question
       end
 
       it 'changes question attibutes' do
