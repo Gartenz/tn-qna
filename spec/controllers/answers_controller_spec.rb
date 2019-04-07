@@ -10,10 +10,6 @@ RSpec.describe AnswersController, type: :controller do
         expect{ post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
       end
 
-      it 'saves answer to database' do
-        expect{ post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
-      end
-
       it 'redirect to question' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
         expect(response).to redirect_to question
