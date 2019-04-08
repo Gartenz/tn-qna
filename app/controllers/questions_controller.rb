@@ -33,6 +33,6 @@ class QuestionsController < ApplicationController
   end
 
   def get_new_answer
-    @answer = question.answers.new
+    @answer = session[:error_obj] ? session[:error_obj] : question.answers.new
   end
 end

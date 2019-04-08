@@ -23,7 +23,7 @@ feature 'User can create question', %q{
       expect(page).to have_content 'Test question'
       expect(page).to have_content 'text text'
     end
-    
+
     scenario 'asks a question with errors' do
       click_on 'Ask'
 

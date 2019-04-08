@@ -1,7 +1,8 @@
 h1 =question.title
 h2 =question.body
 
-= form_with model: [:question, @answer], url: "/questions/#{question.id}/answers", local: true do |f|
+= render 'shared/errors', resource: @answer 
+= form_with model: [@question, @answer], url: "/questions/#{question.id}/answers", local: true do |f|
   = f.label :body
   = f.text_area :body
   = f.submit 'Add answer'
