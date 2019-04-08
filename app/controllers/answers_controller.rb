@@ -1,4 +1,6 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
+  
   expose :question
   expose :answer
 
@@ -7,7 +9,8 @@ class AnswersController < ApplicationController
     if asnwer.save
       redirect_to question_path(question), notice: 'Answer was added successfully.'
     else
-      render :new
+      errors = asnwer.errors.full_messages.join('|')
+      redirect_to question_path(question), notice: errors
     end
   end
 
