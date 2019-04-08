@@ -3,6 +3,9 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
   let(:answer) { create(:answer, :with_question) }
+  let(:user) { create(:user) }
+
+  before { login(user) }
 
   describe 'POST #create' do
     context 'with valid attributes' do
@@ -23,7 +26,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 're-render new view' do
         post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template :new
+        expect(response).to redirect_to question
       end
     end
   end

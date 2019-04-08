@@ -3,8 +3,9 @@ require 'rails_helper'
 feature 'List questions', %q{
   if users want to create non duplicant question
 } do
+  given!(:questions) { create_list(:question, 3) }
+
   describe 'Authenticated user' do
-    given!(:questions) { create_list(:question, 3) }
     given(:user) { create(:user) }
 
     background { sign_in(user) }
