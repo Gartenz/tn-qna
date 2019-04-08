@@ -1,2 +1,12 @@
 h1 =question.title
 h2 =question.body
+
+= form_with model: [:question, @answer], url: "/questions/#{question.id}/answers", local: true do |f|
+  = f.label :body
+  = f.text_area :body
+  = f.submit 'Add answer'
+
+table
+  tr
+    th Answers
+  = render question.answers

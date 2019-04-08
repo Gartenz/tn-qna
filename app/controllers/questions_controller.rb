@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
+  before_action :get_new_answer, only: %i[show]
 
   expose :questions, -> { Question.all }
   expose :question
@@ -29,5 +30,9 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body)
+  end
+
+  def get_new_answer
+    @answer = question.answers.new
   end
 end
