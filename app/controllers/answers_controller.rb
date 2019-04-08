@@ -5,7 +5,7 @@ class AnswersController < ApplicationController
   def create
     asnwer = question.answers.new(answer_params)
     if asnwer.save
-      redirect_to question_path(question)
+      redirect_to question_path(question), notice: 'Answer was added successfully.'
     else
       render :new
     end
