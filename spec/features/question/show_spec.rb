@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 feature 'User can add answer for question on question page.' do
-  given!(:question) { create(:question) }
+  given!(:question) { create(:question, :with_author) }
 
   describe 'Authenticated user' do
-    given(:user) { create(:user) }
+    given(:user) { question.author }
 
     background do
       sign_in(user)

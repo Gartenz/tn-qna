@@ -14,8 +14,9 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    if question.save
-      redirect_to question, notice: 'Your question successfully created'
+    @exposed_question = current_user.created_questions.new(question_params)
+    if @exposed_question.save
+      redirect_to @exposed_question, notice: 'Your question successfully created'
     else
       render :new
     end
@@ -23,7 +24,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     question.destroy
-    redirect_to questions_path
+    redirect_to questions_path, notice: 'Question deleted successfully.'
   end
 
   private
@@ -34,5 +35,6 @@ class QuestionsController < ApplicationController
 
   def get_new_answer
     @answer = session[:error_obj] ? session[:error_obj] : question.answers.new
+    session[:error_obj] = nil
   end
 end

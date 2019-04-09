@@ -1,7 +1,9 @@
 h1 =question.title
 h2 =question.body
-
-= render 'shared/errors', resource: @answer 
+- if user_signed_in?
+  - if current_user.email == question.author.email
+    = link_to 'Delete', question_path(question), class: 'btn btn-danger', method: :delete
+= render 'shared/errors', resource: @answer
 = form_with model: [@question, @answer], url: "/questions/#{question.id}/answers", local: true do |f|
   = f.label :body
   = f.text_area :body
