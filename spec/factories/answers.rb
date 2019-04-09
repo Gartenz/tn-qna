@@ -2,6 +2,10 @@ FactoryBot.define do
   factory :answer do
     body { "MyText" }
 
+    trait :with_author do
+      author { create(:user) }
+    end
+
     trait :with_question do
       question { create(:question, :with_author) }
     end
