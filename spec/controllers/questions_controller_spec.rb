@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
+  let(:user) { create(:user) }
 
   describe 'POST #create' do
-    let(:question) { create(:question) }
-    let(:user) { create(:user) }
-
     before { login(user) }
 
     context 'with valid attributes' do
@@ -16,6 +14,11 @@ RSpec.describe QuestionsController, type: :controller do
       it 'redirect to show view' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to assigns(:exposed_question)
+      end
+
+      it 'checks if current user owns this question' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(Question.last.user).to eq user
       end
     end
 
@@ -32,9 +35,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:question) { create(:question, :with_author) }
+    let(:question) { create(:question, user: user) }
 
-    before { login(question.author) }
+    before { login(question.user) }
 
     context 'with valid attributes' do
       it 'assigns requested question to @question' do
@@ -57,33 +60,59 @@ RSpec.describe QuestionsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
 
       it 'does not change question' do
+        old_title = question.title
+
+        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }
         question.reload
 
-        expect(question.title).to eq 'MyString'
+        expect(question.title).to eq old_title
         expect(question.body).to eq 'MyText'
       end
 
       it 're-render edit view' do
+        patch :update, params: { id: question, question: attributes_for(:question, :invalid) }
         expect(response).to render_template :edit
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    let!(:question) { create(:question, :with_author) }
+    let!(:question) { create(:question, user: user) }
 
-    before { login(question.author) }
+    context 'User tries to delete his own question' do
+      before { login(question.user) }
 
-    it 'deletes question' do
-      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      it 'deletes question' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirects to index view' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
     end
 
-    it 'redirects to index view' do
+    context 'User tries to delete not his own question' do
+      before do
+        user = create(:user)
+        login(user)
+      end
+
+      it 'deletes question' do
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(0)
+      end
+
+      it 'redirects to index view' do
+        delete :destroy, params: { id: question }
+        expect(response).to render_template 'questions/show'
+      end
+    end
+
+    it 'Unauthenticated user tries to delete question' do
       delete :destroy, params: { id: question }
-      expect(response).to redirect_to questions_path
+      expect(response).to redirect_to new_user_session_path
     end
   end
 end
