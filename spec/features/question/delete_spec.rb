@@ -25,7 +25,7 @@ feature 'Only author can delete his own questions', %q{
   end
 
   scenario 'Unauthenticated user tries to delete question' do
-    visit question_path(answer.question)
+    visit question_path(question)
 
     expect(page).to_not have_link('Delete answer')
   end
