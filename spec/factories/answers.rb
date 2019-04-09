@@ -3,7 +3,7 @@ FactoryBot.define do
     body { "MyText" }
 
     trait :with_question do
-      question
+      question { create(:question, :with_author) }
     end
 
     trait :invalid do
