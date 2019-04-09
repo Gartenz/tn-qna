@@ -1,14 +1,12 @@
 FactoryBot.define do
+  sequence :body do |n|
+    "My awesome answer #{n}"
+  end
+
   factory :answer do
-    body { "MyText" }
-
-    trait :with_author do
-      author { create(:user) }
-    end
-
-    trait :with_question do
-      question { create(:question, :with_author) }
-    end
+    body
+    user
+    question
 
     trait :invalid do
       body { nil }

@@ -5,13 +5,12 @@ class AnswersController < ApplicationController
   expose :answer
 
   def create
-    asnwer = question.answers.new(answer_params)
-    asnwer.author = current_user
-    if asnwer.save
+    @exposed_answer = question.answers.new(answer_params)
+    answer.user = current_user
+    if answer.save
       redirect_to question_path(question), notice: 'Answer was added successfully.'
     else
-      errors = asnwer.errors.full_messages.join('|')
-      redirect_to question_path(question), notice: errors
+      render 'questions/show'
     end
   end
 
@@ -24,8 +23,13 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    answer.destroy
-    redirect_to answer.question, notice: 'Answer deleted successfully.'
+    if current_user.author_of?(answer)
+      answer.destroy
+      msg = { notice: 'Answer deleted successfully.' }
+    else
+      msg = { alert: 'You can not delete not your answer' }
+    end
+    redirect_to answer.question, msg
   end
 
   private

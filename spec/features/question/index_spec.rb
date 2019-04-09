@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'List questions', %q{
   if users want to create non duplicant question
 } do
-  given!(:questions) { create_list(:question, 3, :with_author) }
+  given!(:questions) { create_list(:question, 3) }
 
   describe 'Authenticated user' do
     given(:user) { create(:user) }
@@ -13,7 +13,9 @@ feature 'List questions', %q{
     scenario 'wants to see list of questions' do
       visit questions_path
 
-      expect(page).to have_content questions[0].title
+      questions.each do |q|
+        expect(page).to have_content q.title
+      end
     end
 
   end
@@ -21,6 +23,8 @@ feature 'List questions', %q{
   scenario 'Unauthenticated user wants to see list of questions' do
     visit questions_path
 
-    expect(page).to have_content questions[0].title
+    questions.each do |q|
+      expect(page).to have_content q.title
+    end
   end
 end
