@@ -18,7 +18,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'checks if current user owns this question' do
         post :create, params: { question: attributes_for(:question) }
-        expect(Question.last.user).to eq user
+        expect(assigns(:exposed_question).user).to eq user
       end
     end
 
