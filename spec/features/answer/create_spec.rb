@@ -12,10 +12,12 @@ feature 'User can add answer for question on question page.' do
     end
 
     scenario 'adds answer' do
-      fill_in :Body, with: 'some text'
+      body = 'some text'
+      fill_in :Body, with: body
       click_on 'Add answer'
 
       expect(page).to have_content 'Answer was added successfully.'
+      expect(page).to have_content body
     end
 
     scenario 'adds answer with errors' do

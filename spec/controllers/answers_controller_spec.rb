@@ -19,7 +19,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'checks if current user owns this answer' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(question.answers.last.user).to eq user
+        expect(assigns(:exposed_answer).user).to eq user
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       it 'not deletes answer from DB' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(0)
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
 
       it 'redirects to index view' do

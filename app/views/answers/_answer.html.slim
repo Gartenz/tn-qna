@@ -3,6 +3,5 @@
     td
       = answer.body
     td
-      - if user_signed_in?
-        - if current_user.author_of?(answer)
-          = link_to 'Delete answer', answer_path(answer), method: :delete
+      - if current_user&.author_of?(answer)
+        = link_to 'Delete answer', answer_path(answer), method: :delete

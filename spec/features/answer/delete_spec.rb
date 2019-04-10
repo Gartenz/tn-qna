@@ -10,9 +10,12 @@ feature 'Only author can delete his own answer', %q{
 
     visit question_path(answer.question)
 
+    expect(page).to have_content answer.body
+
     click_on 'Delete answer'
 
     expect(page).to have_content 'Answer deleted successfully.'
+    expect(page).to_not have_content answer.body
   end
 
   scenario 'Author tries to delete another user answer' do
@@ -26,7 +29,7 @@ feature 'Only author can delete his own answer', %q{
 
   scenario 'Unauthenticated user tries to delete answer' do
     visit question_path(answer.question)
-    
+
     expect(page).to_not have_link('Delete answer')
   end
 end

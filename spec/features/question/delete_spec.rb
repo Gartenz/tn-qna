@@ -8,11 +8,17 @@ feature 'Only author can delete his own questions', %q{
   scenario 'Author tries to delete his own question' do
     sign_in(question.user)
 
+    visit questions_path
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+
     visit question_path(question)
 
     click_on 'Delete'
 
     expect(page).to have_content 'Question deleted successfully.'
+    expect(page).to_not have_content question.title
+    expect(page).to_not have_content question.body
   end
 
   scenario 'Author tries to delete another user question' do
