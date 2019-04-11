@@ -1,7 +1,14 @@
 - if answer.persisted?
-  tr
+  = content_tag :tr, data:{answer_id: answer.id}
     td
       = answer.body
-    td
+    td.answer-actions
       - if current_user&.author_of?(answer)
         = link_to 'Delete answer', answer_path(answer), method: :delete, class: 'btn btn-danger'
+        = link_to 'Edit', '#', class: 'btn btn-primary edit-answer-link', data: { answer_id: answer.id}
+    td.hidden id="edit-answer-#{answer.id}"
+      = form_with model: answer do |f|
+        .form-group
+          = f.label :body
+          = f.text_area :body, class: 'form-control'
+          = f.submit 'Update', class: 'btn btn-primary'
