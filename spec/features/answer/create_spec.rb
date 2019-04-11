@@ -13,12 +13,13 @@ feature 'User can add answer for question on question page.' do
 
     scenario 'adds answer' do
       body = 'some text'
-      fill_in :Body, with: body
-      click_on 'Add answer'
-
-      within '.answers' do
-        expect(page).to have_content body
+      
+      within '.new-answer' do
+        fill_in :Body, with: body
+        click_on 'Add answer'
       end
+      
+      expect(page).to have_content body
     end
 
     scenario 'adds answer with errors' do
@@ -30,10 +31,12 @@ feature 'User can add answer for question on question page.' do
 
   scenario "Unauthenticated user can't add answer" do
     visit question_path(question)
-
-    fill_in :Body, with: 'some text'
-    click_on 'Add answer'
-
+    
+    within '.new-answer' do
+      fill_in :Body, with: 'some text'
+      click_on 'Add answer'
+    end
+    
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end
