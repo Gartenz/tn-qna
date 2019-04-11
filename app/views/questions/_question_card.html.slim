@@ -1,0 +1,17 @@
+.card
+  .card-body
+    .question
+      h5= question.title
+      p= question.body
+      - if current_user&.author_of?(question)
+        = link_to 'Delete', question_path(question), class: 'btn btn-danger', method: :delete
+        = link_to 'Edit', '#', class: 'btn btn-primary edit-question-link'
+    .question-form.hidden
+      = form_with model: question, class:'question-edit-form' do |f|
+        .form-group
+          = f.label :title
+          = f.text_area :title, class: 'form-control'
+        .form-group
+          = f.label :body
+          = f.text_area :body, class: 'form-control'
+        = f.submit 'Update', class: 'btn btn-primary'
