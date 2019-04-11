@@ -1,0 +1,5 @@
+$('.answer-errors').html('<%= render 'shared/errors', resource: answer %>')
+<% if answer.persisted? %>
+  $('table.table.table-striped').append('<%= j render answer %>')
+  $('#answer_body').val('')
+<% end %>

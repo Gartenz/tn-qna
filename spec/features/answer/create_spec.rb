@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User can add answer for question on question page.' do
   given!(:question) { create(:question) }
 
-  describe 'Authenticated user' do
+  describe 'Authenticated user', js: true do
     given(:user) { question.user }
 
     background do
@@ -16,8 +16,9 @@ feature 'User can add answer for question on question page.' do
       fill_in :Body, with: body
       click_on 'Add answer'
 
-      expect(page).to have_content 'Answer was added successfully.'
-      expect(page).to have_content body
+      within '.answers' do
+        expect(page).to have_content body
+      end
     end
 
     scenario 'adds answer with errors' do
