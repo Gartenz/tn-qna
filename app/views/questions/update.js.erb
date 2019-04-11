@@ -1,0 +1,4 @@
+$('.question-errors').html('<%= render "shared/errors", resource: question %>');
+<% if !question.errors.present? %>
+  $('.card').replaceWith('<%= j render "question_card", question: question %>')
+<% end %>
