@@ -7,11 +7,7 @@ class AnswersController < ApplicationController
   def create
     @exposed_answer = question.answers.new(answer_params)
     answer.user = current_user
-    if answer.save
-      redirect_to question_path(question), notice: 'Answer was added successfully.'
-    else
-      render 'questions/show'
-    end
+    answer.save
   end
 
   def update

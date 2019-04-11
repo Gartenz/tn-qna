@@ -10,15 +10,17 @@
   .col.col-sm-12.col-md-12.col-lg-12
     | Add an answer
   .col.col-sm-12.col-md-12.col-lg-12
-    = render 'shared/errors', resource: answer
-    = form_with model: [question, answer], local: true do |f|
+    .answer-errors
+      = render 'shared/errors', resource: answer
+    = form_with model: [question, answer] do |f|
       .form-group
         = f.label :body
         = f.text_area :body, class: 'form-control'
         = f.submit 'Add answer', class: 'btn btn-primary'
 .row
-  table.table.table-striped
-    tr
-      th Answers
-      th Actions
-    = render question.answers
+  .answers
+    table.table.table-striped
+      tr
+        th Answers
+        th Actions
+      = render question.answers
