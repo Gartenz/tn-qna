@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question:question, user: user) }
 
   describe 'POST #create' do
     before { login(user) }
@@ -36,42 +37,37 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:answer) { create(:answer, question:question, user: user) }
     before { login(user) }
 
     context 'with valid attributes' do
       it 'changes answer attributes' do
-        patch :update, params: { question_id: question, id: answer, answer: { body: '123' } }
+        patch :update, params: { question_id: question, id: answer, answer: { body: '123' } }, format: :js
         answer.reload
 
         expect(answer.body).to eq '123'
       end
 
       it 'redirect to question view' do
-        patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer) }
-        expect(response).to redirect_to question
+        patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer) }, format: :js
+        expect(response).to render_template :update
       end
     end
 
     context 'with invalid attributes' do
       it 'does not change question' do
-        old_body = answer.body
-        patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer, :invalid) }
-        answer.reload
-
-        expect(answer.body).to eq old_body
+        expect do
+          patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        end.to_not change(answer, :body)
       end
 
       it 're-render edit view' do
-        patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template :edit
+        patch :update, params: { question_id: question, id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        expect(response).to render_template :update
       end
     end
   end
 
   describe 'DELETE #destroy' do
-    let!(:answer) { create(:answer, question: question, user: user) }
-
     context 'User tries to delete his own answer' do
       before { login(answer.user) }
 

@@ -18,9 +18,10 @@
         = f.text_area :body, class: 'form-control'
         = f.submit 'Add answer', class: 'btn btn-primary'
 .row
-  .answers
-    table.table.table-striped
-      tr
-        th Answers
-        th Actions
-      = render question.answers
+  .col.col-sm-12.col-md-12.col-lg-12
+    .answers
+      table.table.table-striped
+        tr
+          th Answers
+          th Actions
+        = render question.answers
