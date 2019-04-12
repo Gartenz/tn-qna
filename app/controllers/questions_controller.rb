@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
 
   expose :questions, -> { Question.all }
-  expose :question
+  expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
   expose :answer, -> { question.answers.new }
 
   def update
@@ -30,7 +30,7 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, :file)
+    params.require(:question).permit(:title, :body, files: [])
   end
 
 end
