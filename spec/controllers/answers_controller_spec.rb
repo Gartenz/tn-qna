@@ -102,4 +102,59 @@ RSpec.describe AnswersController, type: :controller do
       expect(response).to redirect_to new_user_session_path
     end
   end
+
+  describe 'PATCH #best' do
+    context 'Authenticated user' do
+      let!(:old_best) { create(:answer, question: question, best: true) }
+
+      context 'as author of question tries to mark best answer' do
+
+        before do
+          login user
+          patch :best, params: { id: answer }, format: :js
+        end
+
+        it 'updates answer params in DB' do
+          old_best.reload
+          answer.reload
+
+          expect(old_best.best).to eq false
+          expect(answer.best).to eq true
+        end
+
+        it 'renders view' do
+          patch :best, params: { id: answer }, format: :js
+
+          expect(response).to render_template :best
+        end
+      end
+
+      context 'as not an author of question tries to mark best answer' do
+        let(:other_user) { create(:user) }
+
+        before do
+          login other_user
+          patch :best, params: { id: answer }, format: :js
+        end
+
+        it 'not updates params in DB' do
+          old_best.reload
+          answer.reload
+
+          expect(old_best.best).to_not eq false
+          expect(answer.best).to_not eq true
+        end
+
+        it 'renders view' do
+          expect(response).to render_template :best
+        end
+      end
+    end
+
+    it 'Unauthenticated user tries to mark answer' do
+      patch :best, params: { id: answer }
+
+      expect(response).to redirect_to new_user_session_path
+    end
+  end
 end
