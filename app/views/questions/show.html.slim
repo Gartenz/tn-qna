@@ -18,8 +18,4 @@
 .row
   .col.col-sm-12.col-md-12.col-lg-12
     .answers
-      table.table.table-striped
-        tr
-          th Answers
-          th Actions
-        = render question.answers
+      = render 'answers_table', answers: question.answers
