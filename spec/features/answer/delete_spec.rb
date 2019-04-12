@@ -5,7 +5,7 @@ feature 'Only author can delete his own answer', %q{
 } do
   given(:answer) { create(:answer) }
 
-  scenario 'Author tries to delete his own answer' do
+  scenario 'Author tries to delete his own answer', js: true do
     sign_in(answer.user)
 
     visit question_path(answer.question)
@@ -14,7 +14,6 @@ feature 'Only author can delete his own answer', %q{
 
     click_on 'Delete answer'
 
-    expect(page).to have_content 'Answer deleted successfully.'
     expect(page).to_not have_content answer.body
   end
 

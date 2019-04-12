@@ -101,11 +101,11 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       it 'deletes question' do
-        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(0)
+        expect { delete :destroy, params: { id: question }, format: :js }.to change(Question, :count).by(0)
       end
 
       it 'redirects to index view' do
-        delete :destroy, params: { id: question }
+        delete :destroy, params: { id: question }, format: :js
         expect(response).to render_template 'questions/show'
       end
     end

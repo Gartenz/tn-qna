@@ -4,7 +4,7 @@
       = answer.body
     td.answer-actions
       - if current_user&.author_of?(answer)
-        = link_to 'Delete answer', answer_path(answer), method: :delete, class: 'btn btn-danger'
+        = link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, class: 'btn btn-danger'
         = link_to 'Edit', '#', class: 'btn btn-primary edit-answer-link', data: { answer_id: answer.id}
     td.hidden id="edit-answer-#{answer.id}"
       = form_with model: answer do |f|
