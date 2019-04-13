@@ -23,11 +23,7 @@ class AnswersController < ApplicationController
   def best
     if current_user.author_of?(answer.question)
       @exposed_question = answer.question
-      old_best = question.best_answer
-      return if old_best&.id == answer.id
-      
-      old_best&.update(best: false)
-      answer.update(best: true)
+      question.mark_best(answer)
     end
   end
 
