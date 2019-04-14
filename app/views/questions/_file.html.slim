@@ -1,0 +1,6 @@
+tr
+  td
+    = link_to file.filename.to_s, url_for(file)
+    - if current_user&.author_of?(question)
+      td
+        = link_to 'Delete file', attachment_path(file), class: 'btn btn-link', remote: true, method: :delete

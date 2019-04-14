@@ -3,11 +3,13 @@
     .question-body
       h5= question.title
       p= question.body
+      - if question.files.attached?
+        .question-files
+          table
+            = render partial: 'questions/file', collection: question.files
+
       - if current_user&.author_of?(question)
         = link_to 'Delete', question_path(question), class: 'btn btn-danger', method: :delete
         = link_to 'Edit', '#', class: 'btn btn-primary edit-question-link'
-      - if question.files.attached?
-        - question.files.each do |file|
-          p= link_to file.filename.to_s, url_for(file)
     .question-form.hidden
       = render 'form'
