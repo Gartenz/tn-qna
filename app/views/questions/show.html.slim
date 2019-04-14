@@ -2,7 +2,8 @@
   .col.col-sm-12.col-md-12.col-lg-12
     .question-errors
       = render 'shared/errors', resource: answer
-    = render 'question_card'
+    .question
+      = render 'question_card'
 .row
   .col.col-sm-12.col-md-12.col-lg-12
     | Add an answer
@@ -16,7 +17,7 @@
           = f.text_area :body, class: 'form-control'
         .form-group
           = f.label :files
-          = f.file_field :files, multiple: true, class: 'form-control'
+          = f.file_field :files, multiple: true
         = f.submit 'Add answer', class: 'btn btn-primary'
 .row
   .col.col-sm-12.col-md-12.col-lg-12

@@ -1,13 +1,2 @@
 = render 'shared/errors', resource: question
-
-= form_with model: question do |f|
-  .form-group
-    = f.label :title
-    = f.text_field :title, class: 'form-contol'
-  .form-group
-    = f.label :body
-    = f.text_area :body, class: 'form-contol'
-  .form-group
-    = f.label :files
-    = f.file_field :files, multiple: true
-  = f.submit 'Ask', class: 'btn btn-primary'
+= render 'form'

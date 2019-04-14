@@ -27,9 +27,12 @@ feature 'User can edit his question', %q{
 
         fill_in 'Title', with: 'edited awesome title'
         fill_in 'Body', with: 'edited awesome body'
+        attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
 
-        click_on 'Update'
+        click_on 'Update Question'
 
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
         expect(page).to have_content 'edited awesome title'
         expect(page).to have_content 'edited awesome body'
       end
@@ -43,7 +46,7 @@ feature 'User can edit his question', %q{
 
         fill_in 'Title', with: ''
 
-        click_on 'Update'
+        click_on 'Update Question'
       end
       expect(page).to have_content "Title can't be blank"
     end
