@@ -19,5 +19,5 @@
           = f.text_area :body, class: 'form-control'
         .form-group
           = f.label :files
-          = f.file_field :files, multiple: true
+          = f.file_field :files, multiple: true, direct_upload: true
         = f.submit 'Update', class: 'btn btn-primary'
