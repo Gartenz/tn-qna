@@ -1,0 +1,3 @@
+<% if is_record_question?(record)%>
+  $('.question-files').html('<%= render partial: "questions/file", collection: record.files, locals: {question: record} %>')
+<% end %>

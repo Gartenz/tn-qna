@@ -2,7 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
 
   expose :question
-  expose :answer
+  expose :answer, -> { params[:id] ? Answer.with_attached_files.find(params[:id]) : Answer.new }
 
   def create
     @exposed_answer = question.answers.new(answer_params)

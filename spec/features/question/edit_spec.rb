@@ -18,7 +18,6 @@ feature 'User can edit his question', %q{
   end
 
   describe 'Authenticated user' do
-
     scenario 'edits his question', js: true do
       sign_in user
       visit question_path(question)
