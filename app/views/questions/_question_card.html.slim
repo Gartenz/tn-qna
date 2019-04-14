@@ -1,6 +1,6 @@
 .card
   .card-body
-    .question
+    .question-body
       h5= question.title
       p= question.body
       - if current_user&.author_of?(question)
@@ -10,11 +10,4 @@
         - question.files.each do |file|
           p= link_to file.filename.to_s, url_for(file)
     .question-form.hidden
-      = form_with model: question, class:'question-edit-form' do |f|
-        .form-group
-          = f.label :title
-          = f.text_area :title, class: 'form-control'
-        .form-group
-          = f.label :body
-          = f.text_area :body, class: 'form-control'
-        = f.submit 'Update', class: 'btn btn-primary'
+      = render 'form'
