@@ -2,10 +2,10 @@
   = content_tag :tr, data:{answer_id: answer.id}, class: "#{"best-answer" if answer.best}"
     td
       = answer.body
-    td
       - if answer.files.attached?
-        - answer.files.each do |file|
-          p= link_to file.filename.to_s, url_for(file)
+        = content_tag :div, class: "answer-#{answer.id}-files"
+          table
+            = render partial: 'shared/file', collection: answer.files
     td.answer-actions
       - if current_user&.author_of?(answer)
         = link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, class: 'btn btn-danger'

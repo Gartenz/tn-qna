@@ -1,3 +1,8 @@
-<% if is_record_question?(record)%>
-  $('.question-files').html('<%= render partial: "questions/file", collection: record.files, locals: {question: record} %>')
+var node = ''
+<% if is_record_question?(record) %>
+  node = '.question-files'
 <% end %>
+<% if is_record_answer?(record) %>
+  node = '.answer-<%= record.id %>-files'
+<% end %>
+$(node).html('<%= render partial: "shared/file", collection: record.files %>')

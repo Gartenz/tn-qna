@@ -6,7 +6,7 @@
       - if question.files.attached?
         .question-files
           table
-            = render partial: 'questions/file', collection: question.files
+            = render partial: 'shared/file', collection: question.files
 
       - if current_user&.author_of?(question)
         = link_to 'Delete', question_path(question), class: 'btn btn-danger', method: :delete
