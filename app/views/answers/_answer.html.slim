@@ -2,11 +2,11 @@
   = content_tag :tr, data:{answer_id: answer.id}, class: "#{"best-answer" if answer.best}"
     td
       = answer.body
-    td.answer-actions
+    td
       - if answer.files.attached?
         - answer.files.each do |file|
           p= link_to file.filename.to_s, url_for(file)
-    td
+    td.answer-actions
       - if current_user&.author_of?(answer)
         = link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, class: 'btn btn-danger'
         = link_to 'Edit', '#', class: 'btn btn-primary edit-answer-link', data: { answer_id: answer.id}

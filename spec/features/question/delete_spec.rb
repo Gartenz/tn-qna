@@ -13,9 +13,10 @@ feature 'Only author can delete his own questions', %q{
     expect(page).to have_content question.body
 
     visit question_path(question)
-
-    click_on 'Delete'
-
+    within '.card' do
+      click_on 'Delete'
+    end
+    
     expect(page).to have_content 'Question deleted successfully.'
     expect(page).to_not have_content question.title
     expect(page).to_not have_content question.body
