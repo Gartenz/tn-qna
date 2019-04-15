@@ -3,6 +3,19 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
 
+  describe 'GET #new' do
+    before do
+      login(user)
+      get :new
+    end
+
+    it 'assigns to new questions new link' do
+      expect(assigns(:exposed_question).links.first).to be_a_new(Link)
+    end
+
+  end
+
+
   describe 'POST #create' do
     before { login(user) }
 

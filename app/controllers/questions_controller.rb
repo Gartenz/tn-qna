@@ -5,6 +5,10 @@ class QuestionsController < ApplicationController
   expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
   expose :answer, -> { question.answers.new }
 
+  def new
+    question.links.new
+  end
+
   def update
     question.update(question_params)
   end
@@ -30,7 +34,8 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body,
+                                     files: [], links_attributes: [:name, :url])
   end
 
 end
