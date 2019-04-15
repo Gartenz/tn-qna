@@ -18,6 +18,15 @@
         .form-group
           = f.label :files
           = f.file_field :files, multiple: true, direct_upload: true
+        .form-group
+          p Links:
+          = f.fields_for :links do |l|
+            .form-group
+              = l.label :name, 'Link name'
+              = l.text_field :name, class: 'form-control'
+            .form-group
+              = l.label :url
+              = l.text_field :url, class: 'form-control'
         = f.submit 'Add answer', class: 'btn btn-primary'
 .row
   .col.col-sm-12.col-md-12.col-lg-12

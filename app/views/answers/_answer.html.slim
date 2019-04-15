@@ -6,6 +6,10 @@
         = content_tag :div, class: "answer-#{answer.id}-files"
           table
             = render partial: 'shared/file', collection: answer.files
+      p Links:
+      ul
+        - answer.links.each do |link|
+          li= link_to link.name, link.url
     td.answer-actions
       - if current_user&.author_of?(answer)
         = link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, class: 'btn btn-danger'

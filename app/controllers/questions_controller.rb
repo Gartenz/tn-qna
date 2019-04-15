@@ -9,6 +9,10 @@ class QuestionsController < ApplicationController
     question.links.new
   end
 
+  def show
+    answer.links.new
+  end
+
   def update
     question.update(question_params)
   end
