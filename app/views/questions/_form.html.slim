@@ -11,10 +11,7 @@
   .form-group
     p Links:
     = f.fields_for :links do |l|
-      .form-group
-        = l.label :name, 'Link name'
-        = l.text_field :name, class: 'form-control'
-      .form-group
-        = l.label :url
-        = l.text_field :url, class: 'form-control'
+      = render 'shared/links_fields', f: l
+    .links
+      = link_to_add_association 'add link', f, :links, partial: 'shared/links_fields'
   = f.submit nil, class: 'btn btn-primary'

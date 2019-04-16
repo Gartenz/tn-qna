@@ -17,4 +17,5 @@
 //= require popper
 //= require bootstrap
 //= require activestorage
+//= require cocoon
 //= require_tree .
