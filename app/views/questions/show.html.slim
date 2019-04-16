@@ -1,13 +1,13 @@
 .row
-  .col.col-sm-12.col-md-12.col-lg-12
+  .col-sm-12.col-md-12.col-lg-12
     .question-errors
       = render 'shared/errors', resource: answer
     .question
       = render 'question_card'
 .row
-  .col.col-sm-12.col-md-12.col-lg-12
+  .col-sm-12.col-md-12.col-lg-12
     | Add an answer
-  .col.col-sm-12.col-md-12.col-lg-12
+  .col-sm-12.col-md-12.col-lg-12
     .answer-errors
       = render 'shared/errors', resource: answer
     .new-answer
@@ -21,14 +21,11 @@
         .form-group
           p Links:
           = f.fields_for :links do |l|
-            .form-group
-              = l.label :name, 'Link name'
-              = l.text_field :name, class: 'form-control'
-            .form-group
-              = l.label :url
-              = l.text_field :url, class: 'form-control'
+            = render 'shared/links_fields', f: l
+          .links
+            = link_to_add_association 'add link', f, :links, partial: 'shared/links_fields'
         = f.submit 'Add answer', class: 'btn btn-primary'
 .row
-  .col.col-sm-12.col-md-12.col-lg-12
+  .col-sm-12.col-md-12.col-lg-12
     .answers
       = render 'answers_table'
