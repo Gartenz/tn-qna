@@ -1,9 +1,19 @@
 FactoryBot.define do
+  sequence :name do |n|
+    "My url name #{n}"
+  end
   factory :link do
-    name { "MyString" }
+    name
     url { "https://github.com" }
-    linkable { create(:question) }
-    
+
+    trait :for_answer do
+      association(:linkable, factory: :answer)
+    end
+
+    trait :for_question do
+      association(:linkable, factory: :question)
+    end
+
     trait :with_invalid_link do
       url { 'http:/adasd' }
     end

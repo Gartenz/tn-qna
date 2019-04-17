@@ -33,4 +33,10 @@
         .form-group
           = f.label :files
           = f.file_field :files, multiple: true, direct_upload: true
+        .form-group
+          p Links:
+          = f.fields_for :links do |l|
+            = render 'shared/links_fields', f: l
+          .links
+            = link_to_add_association 'add link', f, :links, partial: 'shared/links_fields'
         = f.submit 'Update', class: 'btn btn-primary'
