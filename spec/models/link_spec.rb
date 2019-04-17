@@ -8,7 +8,7 @@ RSpec.describe Link, type: :model do
 
   describe '#validates_url_format' do
     it 'expects to create object' do
-      expect { create(:link) }.to change(Link, :count).by(1)
+      expect { create(:link, :for_answer) }.to change(Link, :count).by(1)
     end
 
     it 'false if url is invalid' do
