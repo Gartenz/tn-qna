@@ -12,6 +12,14 @@
         ul
           - question.links.each do |link|
             li= link_to link.name, link.url
+            - if is_gist(link)
+              .card-group
+                - get_gist_files(link).each do |file|
+                  .card.bg-light
+                    .card-header
+                      = file[1].filename
+                    .card-body
+                      = file[1].content
       - if current_user&.author_of?(question)
         = link_to 'Delete', question_path(question), class: 'btn btn-danger', method: :delete
         = link_to 'Edit', '#', class: 'btn btn-primary edit-question-link'
