@@ -6,7 +6,7 @@ feature 'User can add links to answer', %q{
 } do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  given(:simple_url) { 'https://google.com' }
+  given(:simple_urls) { ['https://google.com', 'https://yandex.ru'] }
   given(:gist_url) { 'https://gist.github.com/Gartenz/2b300505c12cf48e38c95d00edb7fd0b' }
   given(:invalid_url) { 'gist/Gartenz/2b300505c12cf48e38c95d00edb7fd0b' }
 
@@ -19,14 +19,23 @@ feature 'User can add links to answer', %q{
     scenario 'adds link when give an answer', js: true do
       within '.new-answer' do
         fill_in 'Body', with: 'Test text question'
-        fill_in 'Link name', with: 'My link'
-        fill_in 'Url', with: simple_url
+
+        click_on 'add link'
+
+        nested_fields = all('div.nested-fields')
+
+        nested_fields.each.with_index do |group, index|
+          within group do
+            fill_in 'Link name', with: 'My link'
+            fill_in 'Url', with: simple_urls[index]
+          end
+        end
 
         click_on 'Add answer'
       end
 
       within '.answers' do
-        expect(page).to have_link 'My link', href: simple_url
+        simple_urls.each { |url| expect(page).to have_link 'My link', href: url }
       end
     end
 
