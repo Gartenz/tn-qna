@@ -1,13 +1,24 @@
 = form_with model: question do |f|
-  .form-group
-    = f.label :title
-    = f.text_field :title, class: 'form-control'
-  .form-group
-    = f.label :body
-    = f.text_area :body, class: 'form-control'
-  .form-group
-    = f.label :files
-    = f.file_field :files, multiple: true, direct_upload: true
+  .question
+    .form-group
+      = f.label :title
+      = f.text_field :title, class: 'form-control'
+    .form-group
+      = f.label :body
+      = f.text_area :body, class: 'form-control'
+    .form-group
+      = f.label :files
+      = f.file_field :files, multiple: true, direct_upload: true
+  .reward
+    .form-group
+      p Reward:
+      = f.fields_for :reward do |r|
+        .form-group
+          = r.label :title
+          = r.text_field :title, class: 'form-control'
+        .form-group
+          = r.label :image
+          = r.file_field :image
   .form-group
     p Links:
     = f.fields_for :links do |l|

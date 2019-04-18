@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question, user: user) }
+  let(:question) { create(:question, :with_reward, user: user) }
   let!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'POST #create' do
@@ -108,18 +108,22 @@ RSpec.describe AnswersController, type: :controller do
       let!(:old_best) { create(:answer, question: question, best: true) }
 
       context 'as author of question tries to mark best answer' do
-
         before do
           login user
-          patch :best, params: { id: answer }, format: :js
         end
 
         it 'updates answer params in DB' do
+          patch :best, params: { id: answer }, format: :js
+
           old_best.reload
           answer.reload
 
           expect(old_best.best).to eq false
           expect(answer.best).to eq true
+        end
+
+        it 'assigns reward to user' do
+          expect { patch :best, params: { id: answer }, format: :js }.to change(answer.user.rewards, :count).by(1)
         end
 
         it 'renders view' do
