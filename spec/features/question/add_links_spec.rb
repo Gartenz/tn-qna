@@ -14,20 +14,23 @@ feature 'User can add links ti question', %q{
     end
 
     scenario 'User adds link when asks question' do
-
-      fill_in 'Title', with: 'Test title'
-      fill_in 'Body', with: 'Test text question'
+      within '.question' do
+        fill_in 'Title', with: 'Test title'
+        fill_in 'Body', with: 'Test text question'
+      end
       fill_in 'Link name', with: 'My gist'
       fill_in 'Url', with: gist_url
 
-      click_on 'Create Question'
+        click_on 'Create Question'
 
       expect(page).to have_link 'My gist', href: gist_url
     end
 
     scenario 'adds gist link when give an answer' do
-      fill_in 'Title', with: 'Test title'
-      fill_in 'Body', with: 'Test text question'
+      within '.question' do
+        fill_in 'Title', with: 'Test title'
+        fill_in 'Body', with: 'Test text question'
+      end
       fill_in 'Link name', with: 'My gist'
       fill_in 'Url', with: gist_url
 

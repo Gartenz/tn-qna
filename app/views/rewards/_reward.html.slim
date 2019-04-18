@@ -1,0 +1,9 @@
+.card.d-inline-flex
+  - if reward.image.attached?
+    = image_tag reward.image, class: 'card-img-top reward-img'
+  .card-body
+    h5.card-title
+      = reward.title
+    p.card-text
+      | Question:
+      = link_to reward.question.title, question_path(reward.question), class: 'btn btn-link'

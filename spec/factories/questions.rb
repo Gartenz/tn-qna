@@ -8,6 +8,10 @@ FactoryBot.define do
     body { "MyText" }
     user
 
+    trait :with_reward do
+      reward { create(:reward) }
+    end
+
     trait :with_links do
       links { create_list(:link, 1, :for_question) }
     end

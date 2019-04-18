@@ -15,8 +15,11 @@ feature 'User can create question', %q{
     end
 
     scenario 'asks a question' do
-      fill_in 'Title', with: 'Test question'
-      fill_in 'Body', with: 'text text'
+      within '.question' do
+        fill_in 'Title', with: 'Test question'
+        fill_in 'Body', with: 'text text'
+      end
+
       click_on 'Create Question'
 
       expect(page).to have_content 'Your question successfully created'
@@ -31,8 +34,11 @@ feature 'User can create question', %q{
     end
 
     scenario 'asks question with attached file' do
-      fill_in 'Title', with: 'Test question'
-      fill_in 'Body', with: 'text text'
+      within '.question' do
+        fill_in 'Title', with: 'Test question'
+        fill_in 'Body', with: 'text text'
+      end
+
       attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
       click_on 'Create Question'
 

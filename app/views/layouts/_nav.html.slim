@@ -3,8 +3,11 @@ nav.navbar.navbar-light.bg-light
     li.nav-item
       span.navbar-brand
         b= current_user&.email
-    li.nav-item
-      - if current_user
+    - if current_user
+      li.nav-item
         = link_to 'Sign out', destroy_user_session_path , method: :delete, class: 'nav-link'
-      - else
+      li.nav-item
+        = link_to 'My rewards', rewards_path, class: 'nav-link'
+    - else
+      li.nav-item
         = link_to 'Sign in', new_user_session_path, class: 'nav-link'
