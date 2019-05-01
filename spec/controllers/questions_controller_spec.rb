@@ -138,4 +138,41 @@ RSpec.describe QuestionsController, type: :controller do
       expect(response).to redirect_to new_user_session_path
     end
   end
+
+  describe 'PATCH #vote_up' do
+    let(:question) { create(:question) }
+
+    before do
+      login user
+    end
+
+    it 'change rating up of answer' do
+      expect { patch :vote_up, params: { id: question , format: :json } }.to change(question.votes, :count).to(1)
+    end
+  end
+
+  describe 'PATCH #vote_down' do
+    let(:question) { create(:question) }
+
+    before do
+      login user
+    end
+
+    it 'change rating down of question' do
+      expect { patch :vote_down, params: { id: question , format: :json } }.to change(question.votes, :count).to(1)
+    end
+  end
+
+  describe 'PATCH #vote_cancel' do
+    let(:question) { create(:question) }
+
+    before do
+      login user
+      patch :vote_down, params: { id: question , format: :json }
+    end
+
+    it 'cancel vote rating of question' do
+      expect { patch :vote_up, params: { id: question , format: :json } }.to_not change(question.votes, :count)
+    end
+  end
 end

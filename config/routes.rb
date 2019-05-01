@@ -3,11 +3,20 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'questions#index'
 
+  concern :votable do
+    member do
+      patch :vote_up
+      patch :vote_down
+      patch :cancel_vote
+    end
+  end
+
+
   resources :rewards, only: %i[index]
   resources :attachments, only: %i[destroy]
 
-  resources :questions do
-    resources :answers, shallow: true do
+  resources :questions, concerns: [:votable] do
+    resources :answers, shallow: true, concerns: [:votable] do
       member do
         patch :best
       end
