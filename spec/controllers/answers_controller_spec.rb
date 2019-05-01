@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
+  let(:another_user) { create(:user) }
   let(:question) { create(:question, :with_reward, user: user) }
   let!(:answer) { create(:answer, question: question, user: user) }
 
@@ -159,6 +160,35 @@ RSpec.describe AnswersController, type: :controller do
       patch :best, params: { id: answer }
 
       expect(response).to redirect_to new_user_session_path
+    end
+  end
+
+  describe 'PATCH #vote_up' do
+    before do
+      login another_user
+    end
+
+    it 'change rating up of answer' do
+      expect { patch :vote_up, params: { id: answer , format: :json } }.to change(answer.votes, :count).to(1)
+    end
+  end
+  describe 'PATCH #vote_down' do
+    before do
+      login another_user
+    end
+
+    it 'change rating down of answer' do
+      expect { patch :vote_down, params: { id: answer , format: :json } }.to change(answer.votes, :count).to(1)
+    end
+  end
+  describe 'PATCH #vote_cancel' do
+    before do
+      login another_user
+      patch :vote_down, params: { id: answer , format: :json }
+    end
+
+    it 'cancel voting of answer' do
+      expect { patch :vote_up, params: { id: answer , format: :json } }.to_not change(answer.votes, :count)
     end
   end
 end

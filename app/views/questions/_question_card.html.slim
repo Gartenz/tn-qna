@@ -1,6 +1,14 @@
 .card
   .card-body
     .question-body
+      h5.question-rating
+        | Rating: 
+        span.question-score
+          = question.score
+        - if signed_in? && !current_user&.author_of?(question)
+          = link_to "Vote up", vote_up_question_path(question), method: :patch, remote: true, data: { type: :json }
+          = link_to "Vote down", vote_down_question_path(question), method: :patch, remote: true, data: { type: :json }
+          = link_to "Cancel vote", cancel_vote_question_path(question), method: :patch, remote: true, data: { type: :json }
       h5= question.title
       p= question.body
       - if question.files.attached?
