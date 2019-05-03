@@ -34,24 +34,31 @@ feature 'User can vote for answer', %q{
     context 'as not an author tries' do
       scenario 'vote as positive to answer', js: true do
         within ".answer-rating-#{answer.id}" do
+          expect(page).to have_content 0
+
           click_on 'Vote up'
 
-          expect(page).to have_content answer.score
+          expect(page).to have_content 1
         end
       end
       scenario 'vote as negative to answer', js: true do
         within ".answer-rating-#{answer.id}" do
+          expect(page).to have_content 0
+
           click_on 'Vote down'
 
-          expect(page).to have_content answer.score
+          expect(page).to have_content -1
         end
       end
 
       scenario 'cancel vote', js: true do
         within ".answer-rating-#{answer.id}" do
-          click_on 'Vote down'
+          click_on 'Vote up'
+          expect(page).to have_content 1
 
-          expect(page).to have_content answer.score
+          click_on 'Cancel vote'
+
+          expect(page).to have_content 0
         end
       end
     end
