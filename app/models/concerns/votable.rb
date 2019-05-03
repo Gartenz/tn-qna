@@ -6,13 +6,13 @@ module Votable
   end
 
   def voted?(user)
-    !votes.find_by(user: user).nil?
+    votes.exists?(user: user)
   end
 
   def vote(user,type)
     return if voted?(user)
     transaction do
-      self.votes.create!(user: user, good: type)
+      self.votes.create!(user: user, score: type ? 1 : -1)
     end
   end
 
@@ -22,6 +22,6 @@ module Votable
   end
 
   def score
-    votes.good.count - votes.bad.count
+    votes.sum(:score)
   end
 end
