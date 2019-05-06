@@ -10,4 +10,14 @@ $(document).on('turbolinks:load', function() {
     console.log(result.question.score)
     $('.question-score').text(result.question.score)
   });
+
+  App.cable.subscriptions.create('QuestionsChannel', {
+    connected() {
+      console.log('Connected')
+      return this.perform('follow', { text: 'hello' })
+    },
+    received(data) {
+      $('.questions-list').append(data)
+    }
+  })
 });

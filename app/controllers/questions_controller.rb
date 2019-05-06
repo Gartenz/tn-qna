@@ -2,6 +2,7 @@ class QuestionsController < ApplicationController
   include Voted
 
   before_action :authenticate_user!, except: %i[index show]
+  after_action :publish_question, only: %i[create]
 
   expose :questions, -> { Question.all }
   expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
@@ -46,4 +47,15 @@ class QuestionsController < ApplicationController
                                      reward_attributes: [:title, :image])
   end
 
+  def publish_question
+    return if question.errors.any?
+
+    ActionCable.server.broadcast(
+      'questions',
+      ApplicationController.render(
+        partial: 'questions/question',
+        locals: { question: question }
+      )
+    )
+  end
 end
