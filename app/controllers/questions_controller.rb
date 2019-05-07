@@ -15,6 +15,8 @@ class QuestionsController < ApplicationController
 
   def show
     answer.links.new
+    gon.question_id = question.id
+    gon.question_user_id = question.user_id
   end
 
   def update

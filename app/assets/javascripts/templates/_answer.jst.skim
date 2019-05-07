@@ -1,0 +1,65 @@
+tr data-answer-id="#{@id}" class="#{'best-answer' if @best}"
+  td class="answer-rating-#{@id}"
+    span class="answer-score-#{@id}"
+      = @score
+    a data-method='patch' data-remote='true' data-type='json' href="#{@vote_up_path}"
+      | Vote up
+    a data-method='patch' data-remote='true' data-type='json' href="#{@vote_down_path}"
+      | Vote down
+    a data-method='patch' data-remote='true' data-type='json' href="#{@vote_cancel_path}"
+      | Vote cancel
+  td
+    = @body
+    / - if (answer.files.length > 0)
+    /   . class="answer-#{answer.id}-files"
+    /     table
+    /       - for file in answer.files
+    /         = file.name
+    /         tr
+    /           td
+    /             a href="#{file.url}" file.filename.to_s
+    p Links:
+    ul
+      / - if (answer.links.length > 0)
+      /   - for link in answer.links
+      /     li
+      /       a href="#{link.url}" link.name
+        / - if is_gist(link)
+        /   .card-group
+        /     - get_gist_files(link).each do |file|
+        /       .card.bg-light
+        /         .card-header
+        /           = file[1].filename
+        /         .card-body
+        /           = file[1].content
+  td.answer-actions
+  - if (!@best)
+    a.btn.btn-success data-remote='true' data-method='patch' href="/answers/#{@id}"
+      | Best
+  / td.hidden id="edit-answer-#{answer.id}"
+  /   form action="/answer/#{answer.id}" data-remote='true' method='post' accepts-charset='UTF-8'
+  /     input name="utf8" type="hidden" value="✓"
+  /     input type="hidden" name="_method" value="patch"
+  /     .form-group
+  /       label for='answer_body' Body
+  /       text_area.form-control name='answer[body]' id='answer_body'
+  /     .form-group
+  /       label for='answer_files' Files
+  /       input multiple="multiple" data-direct-upload-url="/rails/active_storage/direct_uploads" type="file" name="answer[files][]" id="answer_files"
+  /     .form-group
+  /       p Links:
+  /       =
+  /   = form_with model: answer do |f|
+  /     .form-group
+  /       = f.label :body
+  /       = f.text_area :body, class: 'form-control'
+  /     .form-group
+  /       = f.label :files
+  /       = f.file_field :files, multiple: true, direct_upload: true
+  /     .form-group
+  /       p Links:
+  /       = f.fields_for :links do |l|
+  /         = render 'shared/links_fields', f: l
+  /       .links
+  /         = link_to_add_association 'add link', f, :links, partial: 'shared/links_fields'
+  /     = f.submit 'Update', class: 'btn btn-primary'
