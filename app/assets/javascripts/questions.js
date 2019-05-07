@@ -14,10 +14,10 @@ $(document).on('turbolinks:load', function() {
   App.cable.subscriptions.create('QuestionsChannel', {
     connected() {
       console.log('Connected')
-      return this.perform('follow', { text: 'hello' })
+      this.perform('follow')
     },
     received(data) {
       $('.questions-list').append(data)
     }
-  })
+  });
 });
