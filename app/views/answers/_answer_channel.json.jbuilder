@@ -6,7 +6,20 @@ json.vote_cancel_path polymorphic_path(answer, action: :vote_cancel)
 json.set_best_path best_answer_path(answer)
 json.answer_path answer_path(answer)
 
-json.attachments answer.files do |a|
-  json.file_name a.file.identifier
-  json.file_url a.file.url
+json.files answer.files do |a|
+  json.name a.filename
+  json.url url_for(a)
+end
+
+json.links answer.links do |a|
+  if (is_gist?(a))
+    json.is_gist true
+    json. gist_files get_gist_files(a) do |f|
+      json.name f[1].filename
+      json.body f[1].content
+    end
+  else
+    json.name a.name
+    json.url a.url
+  end
 end

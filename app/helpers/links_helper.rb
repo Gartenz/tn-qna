@@ -1,5 +1,5 @@
 module LinksHelper
-  def is_gist(link)
+  def is_gist?(link)
     res = link.url.match(/https\:\/\/(gist.github.com)/)
     !res.nil?
   end
