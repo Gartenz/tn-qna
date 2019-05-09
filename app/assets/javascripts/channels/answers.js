@@ -8,7 +8,8 @@ App.cable.subscriptions.create('AnswersChannel', {
     answer = $.parseJSON(data)
     console.log(answer)
     if (answer.user_id != gon.current_user_id) {
-      new_answer = JST['templates/_answer'](answer)
+      // alert( !answer.best && gon.current_user_id == answer.question.user_id)
+      new_answer = JST['templates/_answer']({answer: answer})
       $('.answers-table').append(new_answer)
     }
   }
