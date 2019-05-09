@@ -17,7 +17,7 @@
         ul
           - question.links.each do |link|
             li= link_to link.name, link.url
-            - if is_gist(link)
+            - if is_gist?(link)
               .card-group
                 - get_gist_files(link).each do |file|
                   .card.bg-light

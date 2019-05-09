@@ -5,8 +5,11 @@ App.cable.subscriptions.create('AnswersChannel', {
       this.perform('follow', { id: gon.question_id })
   },
   received(data) {
-    console.log(data)
-    new_answer = JST['templates/answer'](data)
-    $('.answers table tr:last').after(new_answer)
+    answer = $.parseJSON(data)
+    console.log(answer)
+    if (answer.user_id != gon.current_user_id) {
+      new_answer = JST['templates/_answer'](answer)
+      $('.answers-table').append(new_answer)
+    }
   }
 })
