@@ -20,7 +20,7 @@ feature 'Author of question can mark answer', %q{
     scenario 'as author marks answer as best', js: true do
       sign_in author
       visit question_path(question)
-      page.find(:css,"tr[data-answer-id='#{answers.last.id}']").click_on 'Best'
+      page.find(:css,"div[data-answer-id='#{answers.last.id}']").click_on 'Best'
 
       within '.answers' do
         expect(page).to have_css('.best-answer')

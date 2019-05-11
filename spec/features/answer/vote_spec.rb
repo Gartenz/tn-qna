@@ -14,7 +14,7 @@ feature 'User can vote for answer', %q{
   scenario 'Unauthenticated user tries to vote' do
     visit question_path(question)
 
-    within "tr[data-answer-id='#{answer.id}']" do
+    within "div[data-answer-id='#{answer.id}']" do
       expect(page).to_not have_link('Vote up')
     end
   end
@@ -34,31 +34,42 @@ feature 'User can vote for answer', %q{
     context 'as not an author tries' do
       scenario 'vote as positive to answer', js: true do
         within ".answer-rating-#{answer.id}" do
-          expect(page).to have_content 0
+          within ".answer-score-#{answer.id}" do
+            expect(page).to have_content 0
+          end
 
           click_on 'Vote up'
 
-          expect(page).to have_content 1
+          within ".answer-score-#{answer.id}" do
+            expect(page).to have_content 1
+          end
         end
       end
       scenario 'vote as negative to answer', js: true do
         within ".answer-rating-#{answer.id}" do
-          expect(page).to have_content 0
+          within ".answer-score-#{answer.id}" do
+            expect(page).to have_content 0
+          end
 
           click_on 'Vote down'
 
-          expect(page).to have_content -1
+          within ".answer-score-#{answer.id}" do
+            expect(page).to have_content -1
+          end
         end
       end
 
       scenario 'cancel vote', js: true do
         within ".answer-rating-#{answer.id}" do
           click_on 'Vote up'
-          expect(page).to have_content 1
-
+          within ".answer-score-#{answer.id}" do
+            expect(page).to have_content 1
+          end
           click_on 'Cancel vote'
 
-          expect(page).to have_content 0
+          within ".answer-score-#{answer.id}" do
+            expect(page).to have_content 0
+          end
         end
       end
     end

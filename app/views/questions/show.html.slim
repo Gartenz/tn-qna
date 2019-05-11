@@ -4,6 +4,15 @@
       = render 'shared/errors', resource: answer
     .question
       = render 'question_card'
+    p
+      | Comments:
+    .question-comments
+      = render question.comments
+    .new-question-comments
+      - if current_user
+        p
+          | New comment:
+        = render partial: 'comments/form', locals: { resource: question }
 .row
   .col-sm-12.col-md-12.col-lg-12
     | Add an answer
@@ -28,4 +37,4 @@
 .row
   .col-sm-12.col-md-12.col-lg-12
     .answers
-      = render 'answers_table'
+      = render 'answers'

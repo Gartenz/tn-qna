@@ -1,6 +1,6 @@
-tr data-answer-id="#{@answer.id}" class="#{'best-answer' if @answer.best}"
-  td class="answer-rating-#{@answer.id}"
-    span class="answer-score-#{@answer.id}"
+div data-answer-id="#{@answer.id}" class="#{'border mt-2 mb-2 best-answer' if @answer.best}"
+  div class="answer-rating-#{@answer.id}"
+    span class="answer-score-#{@answer.id} badge badge-secondary"
       = @answer.score
     -if gon.current_user_id
       a data-method='patch' data-remote='true' data-type='json' href="#{@answer.vote_up_path}"
@@ -9,7 +9,7 @@ tr data-answer-id="#{@answer.id}" class="#{'best-answer' if @answer.best}"
         | Vote down
       a data-method='patch' data-remote='true' data-type='json' href="#{@answer.vote_cancel_path}"
         | Vote cancel
-  td
+  div
     = @answer.body
     - if @answer.files.length > 0
       | Files:
@@ -36,7 +36,10 @@ tr data-answer-id="#{@answer.id}" class="#{'best-answer' if @answer.best}"
                     = file.name
                   div.card-body
                     = file.body
-  td.answer-actions
+  div.answer-actions
     - if gon.current_user_id == @answer.question_user_id
       a.btn.btn-success data-remote='true' data-method='patch' href="#{@answer.set_best_path}"
         | Best
+  p
+    | Comments:
+  div id="answer-#{@answer.id}-comments"

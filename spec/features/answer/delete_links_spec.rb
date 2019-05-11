@@ -16,7 +16,7 @@ feature 'User can delete links to existed answer', %q{
     end
 
     scenario 'delete link', js:true do
-      within "tr[data-answer-id='#{answer.id}']" do
+      within "div[data-answer-id='#{answer.id}']" do
         click_on 'Edit'
 
         nested_groups = all('div.nested-fields')
