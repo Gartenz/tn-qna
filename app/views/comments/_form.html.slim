@@ -1,0 +1,6 @@
+= form_with model: [resource, resource.comments.build] do |f|
+  = hidden_field_tag :commentable, resource.class.name
+  .form-group
+    = f.label :body
+    = f.text_area :body, class: 'form-control'
+  = f.submit 'Add comment', class: 'btn btn-primary'

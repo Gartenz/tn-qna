@@ -17,6 +17,7 @@ class QuestionsController < ApplicationController
     answer.links.new
     gon.question_id = question.id
     gon.question_user_id = question.user_id
+    gon.question_answers_ids = question.answers.pluck(:id)
   end
 
   def update

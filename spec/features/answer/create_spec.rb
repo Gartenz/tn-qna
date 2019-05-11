@@ -55,9 +55,11 @@ feature 'User can add answer for question on question page.' do
       end
 
       scenario 'answers with files' do
-        fill_in 'Body', with: 'text text'
-        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
-        click_on 'Add answer'
+        within '.new-answer' do
+          fill_in 'Body', with: 'text text'
+          attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+          click_on 'Add answer'
+        end
 
         within '.answers'do
           expect(page).to have_link 'rails_helper.rb'

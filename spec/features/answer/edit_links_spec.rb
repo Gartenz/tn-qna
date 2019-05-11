@@ -16,7 +16,7 @@ feature 'User can add links to existed answer', %q{
     end
 
     scenario 'adds links', js:true do
-      within "tr[data-answer-id='#{answer.id}']" do
+      within "div[data-answer-id='#{answer.id}']" do
         click_on 'Edit'
 
         click_on 'add link'

@@ -45,8 +45,6 @@ class AnswersController < ApplicationController
         partial: 'answers/answer_channel',
         locals: {answer: answer}
       )
-      # answer.as_json.merge(files: answer.files.map { |file| { name: file.filename,  url: url_for(file) } })
-      #               .merge(links: answer.links.map { |link| { name: link.name, url: link.url } })
     )
   end
 end

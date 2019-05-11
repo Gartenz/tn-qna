@@ -1,10 +1,10 @@
 - if answer.persisted?
-  = content_tag :tr, data:{answer_id: answer.id}, class: "#{"best-answer" if answer.best}"
-    = content_tag :td, class: "answer-rating-#{answer.id}"
-      =content_tag :span, class: "answer-score-#{answer.id}"
+  = content_tag :div, data:{answer_id: answer.id}, class: "border mt-2 mb-2 #{"best-answer" if answer.best}"
+    = content_tag :span, class: "answer-rating-#{answer.id}"
+      =content_tag :span, class: "answer-score-#{answer.id} badge badge-secondary"
         = answer.score
       = render 'shared/vote', resource: answer
-    td
+    .
       = answer.body
       - if answer.files.attached?
         = content_tag :div, class: "answer-#{answer.id}-files"
@@ -23,13 +23,13 @@
                     = file[1].filename
                   .card-body
                     = file[1].content
-    td.answer-actions
+    .answer-actions
       - if current_user&.author_of?(answer)
         = link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, class: 'btn btn-danger'
         = link_to 'Edit', '#', class: 'btn btn-primary edit-answer-link', data: { answer_id: answer.id}
       - if current_user&.author_of?(answer.question) && !answer.best
         = link_to 'Best', best_answer_path(answer), remote: true, class: 'btn btn-success', method: :patch
-    td.hidden id="edit-answer-#{answer.id}"
+    .hidden id="edit-answer-#{answer.id}"
       = form_with model: answer do |f|
         .form-group
           = f.label :body
@@ -44,3 +44,12 @@
           .links
             = link_to_add_association 'add link', f, :links, partial: 'shared/links_fields'
         = f.submit 'Update', class: 'btn btn-primary'
+    p
+      | Comments:
+    . id="answer-#{answer.id}-comments"
+      = render answer.comments, resource: answer
+    .new-comment
+      - if current_user
+        p
+          | New comment:
+        = render partial: 'comments/form', locals: { resource: answer }
