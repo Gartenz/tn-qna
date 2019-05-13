@@ -25,7 +25,7 @@ class CommentsController < ApplicationController
     return if comment.errors.any?
 
     ActionCable.server.broadcast(
-      "#{@commented.class.name.downcase}_#{@commented.id}_comments",
+      "#{@commented.class.name.downcase}_comments",
       ApplicationController.render(
         partial: 'comments/comment_channel',
         locals: {comment: comment}

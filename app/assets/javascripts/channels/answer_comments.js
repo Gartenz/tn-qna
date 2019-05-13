@@ -1,13 +1,11 @@
 $(document).on('turbolinks:load', function() {
   if(gon.question_answers_ids) {
-    for(i = 0; i < gon.question_answers_ids.length; i++) {
-      subscribeAnswerComments(gon.question_answers_ids[i])
-    }
+    subscribeAnswerComments()
   }
 });
 
-function subscribeAnswerComments(id){
-  App.cable.subscriptions.create({ channel: 'CommentsChannel', type: 'answer', id: id }, {
+function subscribeAnswerComments(){
+  App.cable.subscriptions.create({ channel: 'CommentsChannel', type: 'answer'}, {
     received(data) {
       comment = $.parseJSON(data)
       console.log(comment)
