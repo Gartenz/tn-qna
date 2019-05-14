@@ -30,6 +30,9 @@ gem 'jbuilder', '~> 2.5'
 gem 'slim-rails'
 gem 'gon'
 gem 'skim'
+gem 'omniauth'
+gem "omniauth-oauth2"
+gem 'omniauth-github'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
