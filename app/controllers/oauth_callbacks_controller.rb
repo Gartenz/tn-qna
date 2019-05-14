@@ -8,4 +8,13 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to root_path, alert: 'Something went wrong'
     end
   end
+
+  def vkontakte
+    auth = request.env['omniauth.auth']
+    email =auth.info.email
+    if email.nil?
+      password = Devise.friendly_token[0, 20]
+      user = User.create(email: "changeme.#{auth.credentials.expires_at}@email.com", password: password, password_confirmation: password)
+    end
+  end
 end

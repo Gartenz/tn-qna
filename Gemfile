@@ -33,6 +33,7 @@ gem 'skim'
 gem 'omniauth'
 gem "omniauth-oauth2"
 gem 'omniauth-github'
+gem 'omniauth-vkontakte'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
