@@ -15,7 +15,8 @@ Rails.application.routes.draw do
     end
   end
 
-  match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+  get '/users/:id/add_email_signup', to: 'additional_signups#add_email_signup', as: 'add_email_signup'
+  patch '/users/finish_sign_up', to: 'additional_signups#finish_signup', as: 'finish_signup'
 
   resources :rewards, only: %i[index]
   resources :attachments, only: %i[destroy]
