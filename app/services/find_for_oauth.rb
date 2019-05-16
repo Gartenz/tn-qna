@@ -17,7 +17,6 @@ class Services::FindForOauth
       password = Devise.friendly_token[0, 20]
       if email
         user = User.create!(email: email, password: password, password_confirmation: password)
-        user.create_authorization(auth)
       else
         user = User.new(email: "changeme.#{auth.uid}@email.com", password: password, password_confirmation: password)
         user.skip_confirmation_notification!

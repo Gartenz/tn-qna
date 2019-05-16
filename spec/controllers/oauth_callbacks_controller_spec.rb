@@ -16,7 +16,7 @@ RSpec.describe OauthCallbacksController, type: :controller do
     end
 
     context 'user exists' do
-      let!(:user) { create(:user) }
+      let!(:user) { create(:user, :confirmed) }
 
       before do
         allow(User).to receive(:find_for_oauth).and_return(user)
@@ -60,7 +60,7 @@ RSpec.describe OauthCallbacksController, type: :controller do
 
     context 'user exists' do
       let!(:user) { create(:user) }
-      let(:confirmed_user) { create(:user, confirmed_at: Time.now.utc) }
+      let(:confirmed_user) { create(:user, :confirmed) }
 
       context 'user confirmed' do
         before do
@@ -88,7 +88,7 @@ RSpec.describe OauthCallbacksController, type: :controller do
         end
 
         it 'redirects to add user email' do
-          expect(response).to redirect_to add_email_signup_path(user)
+          expect(response).to redirect_to add_email_signup_path
         end
       end
     end

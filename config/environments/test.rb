@@ -44,5 +44,21 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-   config.action_controller.allow_forgery_protection = false
+  config.action_controller.allow_forgery_protection = false
+
+  OmniAuth.config.test_mode = true
+  OmniAuth.config.add_mock(:vkontakte, {
+    :provider => 'vkontakte',
+    :uid => '123545',
+    :info => {
+      :email => nil
+    }
+  })
+  OmniAuth.config.add_mock(:github, {
+    :provider => 'github',
+    :uid => '123545',
+    :info => {
+      :email => 'some_email@example.com'
+    }
+  })
 end

@@ -61,10 +61,8 @@ feature 'User can add answer for question on question page.' do
           click_on 'Add answer'
         end
 
-        within '.answers'do
-          expect(page).to have_link 'rails_helper.rb'
-          expect(page).to have_link 'spec_helper.rb'
-        end
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
       end
     end
 
