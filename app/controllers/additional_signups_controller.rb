@@ -1,6 +1,4 @@
 class AdditionalSignupsController < ApplicationController
-  expose(:user_signup) { User.find(params[:id]) }
-
   def add_email_signup
   end
 
@@ -20,7 +18,6 @@ class AdditionalSignupsController < ApplicationController
     else
       current_user.update(email: params[:user][:email])
       current_user.send_confirmation_instructions
-      sign_out current_user
     end
     redirect_to root_path
   end

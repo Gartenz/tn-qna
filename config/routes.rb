@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/users/:id/add_email_signup', to: 'additional_signups#add_email_signup', as: 'add_email_signup'
+  get '/users/add_email_signup', to: 'additional_signups#add_email_signup', as: 'add_email_signup'
   patch '/users/finish_sign_up', to: 'additional_signups#finish_signup', as: 'finish_signup'
 
   resources :rewards, only: %i[index]
