@@ -6,7 +6,7 @@ feature 'User can sign in', %q{
   I'd like to be able to sign in
 } do
 
-  given(:user) { create(:user) }
+  given!(:user) { create(:user) }
 
   background { visit new_user_session_path }
 
@@ -24,5 +24,67 @@ feature 'User can sign in', %q{
     click_on 'Log in'
 
     expect(page).to have_content 'Invalid Email or password.'
+  end
+
+  describe 'using omniauth' do
+    describe 'through vkontakte' do
+      background do
+        clear_emails
+        click_on 'Sign in with Vkontakte'
+      end
+
+      describe 'if user exists' do
+        given(:confirmed_user) { create(:user, :confirmed) }
+
+        scenario 'if user confirmed sign in' do
+          fill_in 'Email', with: confirmed_user.email
+          click_on 'Continue'
+
+          expect(page).to have_content confirmed_user.email
+        end
+
+        scenario 'if user not confirmed send email' do
+          fill_in 'Email', with: user.email
+          click_on 'Continue'
+          open_email(user.email)
+          current_email.click_link 'Confirm my account'
+          visit new_user_session_path
+          click_on 'Sign in with Vkontakte'
+
+          expect(page).to have_content user.email
+        end
+      end
+
+      describe 'if user does not exists' do
+        scenario 'send confirmation email' do
+          some_email = "some_email#{rand(0...10000)}@tests.ru"
+          fill_in 'Email', with: some_email
+          click_on 'Continue'
+          open_email(some_email)
+          current_email.click_link 'Confirm my account'
+          visit new_user_session_path
+          click_on 'Sign in with Vkontakte'
+
+          expect(page).to have_content some_email
+        end
+      end
+    end
+
+    describe 'through github' do
+      given(:email) { "random_email_#{rand(0...10000)}@tests.com" }
+
+      scenario 'sign in' do
+        OmniAuth.config.mock_auth[:github][:uid] = rand(0...10000).to_s
+        OmniAuth.config.mock_auth[:github][:info][:email] = email
+        click_on 'Sign in with GitHub'
+
+        open_email(email)
+        current_email.click_link 'Confirm my account'
+        visit new_user_session_path
+        click_on 'Sign in with GitHub'
+
+        expect(page).to have_content email
+      end
+    end
   end
 end

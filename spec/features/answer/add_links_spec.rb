@@ -48,10 +48,8 @@ feature 'User can add links to answer', %q{
         click_on 'Add answer'
       end
 
-      within '.answers' do
-        expect(page).to have_link 'My gist', href: gist_url
-        expect(page).to have_content 'My gist content'
-      end
+      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_content 'My gist content'
     end
 
     scenario 'adds invalid link when give an answer', js: true do

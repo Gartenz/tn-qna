@@ -18,6 +18,7 @@ class AdditionalSignupsController < ApplicationController
     else
       current_user.update(email: params[:user][:email])
       current_user.send_confirmation_instructions
+      sign_out current_user
     end
     redirect_to root_path
   end

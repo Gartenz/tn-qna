@@ -9,7 +9,7 @@ RSpec.describe AdditionalSignupsController, type: :controller do
 
   describe 'Patch #finish_signup' do
     context 'if user exists' do
-      let!(:confirmed_user) { create(:user, :with_auth, confirmed_at: Time.now.utc) }
+      let!(:confirmed_user) { create(:user, :with_auth, :confirmed) }
       let!(:unconfirmed_user) { create(:user) }
 
       it 'deletes temporary user' do
