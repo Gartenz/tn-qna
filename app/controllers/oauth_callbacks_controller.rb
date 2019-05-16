@@ -18,7 +18,7 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
       set_flash_message(:notice, :success, kind: 'Vkontakte') if is_navigational_format?
     else
       sign_in user
-      redirect_to add_email_signup_path(user)
+      redirect_to add_email_signup_path
     end
   end
 end

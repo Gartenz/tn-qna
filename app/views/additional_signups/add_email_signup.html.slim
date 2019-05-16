@@ -1,6 +1,6 @@
 h1
   |Add Email
-= form_with model: user_signup, url: finish_signup_url, local: true do |f|
+= form_with model: current_user, url: finish_signup_url, local: true do |f|
   .form-group
     = f.label :email
     .controls
