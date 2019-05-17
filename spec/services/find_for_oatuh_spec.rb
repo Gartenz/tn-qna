@@ -72,28 +72,8 @@ RSpec.describe Services::FindForOauth do
       context 'email in auth hash does not exists' do
         let(:auth) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: nil }) }
 
-        it 'creates new user' do
-          expect { subject.call }.to change(User, :count).by(1)
-        end
-
-        it 'return unconfimred new user with wild email' do
-          object = subject.call
-          expect(object).to be_a(User)
-          expect(object.confirmed?).to be_falsey
-          expect(object.email).to eq "changeme.#{auth.uid}@email.com"
-        end
-
-        it 'creates authorization' do
-          user = subject.call
-
-          expect(user.authorizations).to_not be_empty
-        end
-
-        it 'creates authorization with provider and uid' do
-          authorization = subject.call.authorizations.first
-
-          expect(authorization.provider).to eq auth.provider
-          expect(authorization.uid).to eq auth.uid
+        it 'returns nil' do
+          expect(subject.call).to be_nil
         end
       end
     end

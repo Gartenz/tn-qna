@@ -6,29 +6,46 @@ RSpec.describe OauthCallbacksController, type: :controller do
   end
 
   describe 'Github' do
-    let(:oauth_data) { {'provider' => 'github', 'uid' => '12345'} }
+    let(:oauth_data) { OmniAuth::AuthHash.new(provider: 'github', uid: '123456', info: { email: nil }) }
 
-    it 'finds user from aouth data' do
+    before do
       allow(request.env).to receive(:[]).and_call_original
       allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
+    end
+
+    it 'finds user from oauth data' do
       expect(User).to receive(:find_for_oauth).with(oauth_data)
       get :github
     end
 
     context 'user exists' do
-      let!(:user) { create(:user, :confirmed) }
+      let(:unconfirmed_user) { create(:user) }
+      let(:confirmed_user) { create(:user, :confirmed) }
 
-      before do
-        allow(User).to receive(:find_for_oauth).and_return(user)
-        get :github
+      context 'user confirmed' do
+        before do
+          allow(User).to receive(:find_for_oauth).and_return(confirmed_user)
+          get :github
+        end
+
+        it 'login user' do
+          expect(subject.current_user).to eq confirmed_user
+        end
+
+        it 'redirects too root_path' do
+          expect(response).to redirect_to root_path
+        end
       end
 
-      it 'login user if it exists' do
-        expect(subject.current_user).to eq user
-      end
+      context 'user does not confirmed' do
+        before do
+          allow(User).to receive(:find_for_oauth).and_return(unconfirmed_user)
+          get :github
+        end
 
-      it 'redirects too root_path' do
-        expect(response).to redirect_to root_path
+        it 'redirects to root path' do
+          expect(response).to redirect_to root_path
+        end
       end
     end
 
@@ -38,8 +55,8 @@ RSpec.describe OauthCallbacksController, type: :controller do
         get :github
       end
 
-      it 'redirects to root_path' do
-        expect(response).to redirect_to root_path
+      it 'redirects to add email page' do
+        expect(response).to redirect_to add_email_signup_path
       end
 
       it 'does not login user' do
@@ -49,17 +66,20 @@ RSpec.describe OauthCallbacksController, type: :controller do
   end
 
   describe 'Vkontakte' do
-    let(:oauth_data) { OmniAuth::AuthHash.new(provider: 'facebook', uid: '123456', info: { email: nil, name: 'aaa' }) }
+    let(:oauth_data) { OmniAuth::AuthHash.new(provider: 'vkontakte', uid: '123456', info: { email: nil }) }
 
-    it 'finds user from oauth data' do
+    before do
       allow(request.env).to receive(:[]).and_call_original
       allow(request.env).to receive(:[]).with('omniauth.auth').and_return(oauth_data)
+    end
+
+    it 'finds user from oauth data' do
       expect(User).to receive(:find_for_oauth).with(oauth_data)
       get :vkontakte
     end
 
     context 'user exists' do
-      let!(:user) { create(:user) }
+      let(:unconfirmed_user) { create(:user) }
       let(:confirmed_user) { create(:user, :confirmed) }
 
       context 'user confirmed' do
@@ -79,16 +99,12 @@ RSpec.describe OauthCallbacksController, type: :controller do
 
       context 'user does not confirmed' do
         before do
-          allow(User).to receive(:find_for_oauth).and_return(user)
+          allow(User).to receive(:find_for_oauth).and_return(unconfirmed_user)
           get :vkontakte
         end
 
-        it 'logins  with unconfimred user' do
-          expect(subject.current_user).to eq user
-        end
-
-        it 'redirects to add user email' do
-          expect(response).to redirect_to add_email_signup_path
+        it 'redirects to root path' do
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -99,8 +115,8 @@ RSpec.describe OauthCallbacksController, type: :controller do
         get :vkontakte
       end
 
-      it 'redirects to root_path' do
-        expect(response).to redirect_to root_path
+      it 'redirects to add email page' do
+        expect(response).to redirect_to add_email_signup_path
       end
 
       it 'does not login user' do
