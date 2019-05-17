@@ -3,23 +3,19 @@ class AdditionalSignupsController < ApplicationController
   end
 
   def finish_signup
-    user = User.where(email: params[:user][:email]).first
-    if user
-      auth = current_user.authorizations.first.delete
-      user.authorizations.create(provider: auth.provider, uid: auth.uid)
-      d_user = current_user
-      sign_out current_user
+    auth = OmniAuth::AuthHash.new(provider: session[:oauth_provider],
+                                  uid: session[:oauth_uid],
+                                  info: { email: params[:user][:email] })
+    session[:oauth_provider] = nil
+    session[:oauth_uid] = nil
+    user = User.find_for_oauth(auth)
+    message = ''
+    if user&.persisted?
       if user.confirmed?
-        sign_in user
+        sign_in_and_redirect user, event: :authentication
       else
-        user.send_confirmation_instructions
+        redirect_to root_path, notice: 'Confirmation instructions was sent to your email'
       end
-      d_user.destroy
-    else
-      current_user.update(email: params[:user][:email])
-      current_user.send_confirmation_instructions
-      sign_out current_user
     end
-    redirect_to root_path
   end
 end

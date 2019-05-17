@@ -26,38 +26,44 @@ feature 'User can sign in', %q{
     expect(page).to have_content 'Invalid Email or password.'
   end
 
-  describe 'using omniauth' do
+  describe 'Using omniauth' do
     describe 'through vkontakte' do
+      given!(:auth_with_comfirmed_user) { create(:authorization, :vk, user: create(:user, :confirmed)) }
+      given!(:auth_with_uncomfirmed_user) { create(:authorization, :vk, user: create(:user)) }
+
       background do
         clear_emails
-        click_on 'Sign in with Vkontakte'
       end
 
       describe 'if user exists' do
-        given(:confirmed_user) { create(:user, :confirmed) }
+        describe 'if user confirmed' do
+          before do
+            OmniAuth.config.mock_auth[:vkontakte][:uid] = auth_with_comfirmed_user.uid
+            click_on 'Sign in with Vkontakte'
+          end
 
-        scenario 'if user confirmed sign in' do
-          fill_in 'Email', with: confirmed_user.email
-          click_on 'Continue'
-
-          expect(page).to have_content confirmed_user.email
+          scenario 'sign in' do
+            expect(page).to have_content auth_with_comfirmed_user.user.email
+          end
         end
 
-        scenario 'if user not confirmed send email' do
-          fill_in 'Email', with: user.email
-          click_on 'Continue'
-          open_email(user.email)
-          current_email.click_link 'Confirm my account'
-          visit new_user_session_path
-          click_on 'Sign in with Vkontakte'
+        describe 'if user not confirmed' do
+          before do
+            OmniAuth.config.mock_auth[:vkontakte][:uid] = auth_with_uncomfirmed_user.uid
+            click_on 'Sign in with Vkontakte'
+          end
 
-          expect(page).to have_content user.email
+          scenario 'Notice user about mail confirmation' do
+            expect(page).to have_content 'You need to confirm your email'
+          end
         end
       end
 
       describe 'if user does not exists' do
         scenario 'send confirmation email' do
           some_email = "some_email#{rand(0...10000)}@tests.ru"
+          click_on 'Sign in with Vkontakte'
+
           fill_in 'Email', with: some_email
           click_on 'Continue'
           open_email(some_email)
@@ -71,19 +77,37 @@ feature 'User can sign in', %q{
     end
 
     describe 'through github' do
-      given(:email) { "random_email_#{rand(0...10000)}@tests.com" }
+      given!(:auth_with_comfirmed_user) { create(:authorization, :github, user: create(:user, :confirmed)) }
+      given!(:auth_with_uncomfirmed_user) { create(:authorization, :github, user: create(:user)) }
 
-      scenario 'sign in' do
-        OmniAuth.config.mock_auth[:github][:uid] = rand(0...10000).to_s
-        OmniAuth.config.mock_auth[:github][:info][:email] = email
-        click_on 'Sign in with GitHub'
+      background do
+        clear_emails
+      end
 
-        open_email(email)
-        current_email.click_link 'Confirm my account'
-        visit new_user_session_path
-        click_on 'Sign in with GitHub'
+      describe 'if user exists' do
+        describe 'if user confirmed' do
+          before do
+            OmniAuth.config.mock_auth[:github][:uid] = auth_with_comfirmed_user.uid
+            OmniAuth.config.mock_auth[:github][:info][:email] = auth_with_comfirmed_user.user.email
+            click_on 'Sign in with GitHub'
+          end
 
-        expect(page).to have_content email
+          scenario 'sign in' do
+            expect(page).to have_content auth_with_comfirmed_user.user.email
+          end
+        end
+
+        describe 'if user not confirmed' do
+          before do
+            OmniAuth.config.mock_auth[:github][:uid] = auth_with_uncomfirmed_user.uid
+            OmniAuth.config.mock_auth[:github][:info][:email] = auth_with_uncomfirmed_user.user.email
+            click_on 'Sign in with GitHub'
+          end
+
+          scenario 'Notice user about mail confirmation' do
+            expect(page).to have_content 'You need to confirm your email'
+          end
+        end
       end
     end
   end
