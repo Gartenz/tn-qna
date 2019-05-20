@@ -1,4 +1,7 @@
 class AdditionalSignupsController < ApplicationController
+  skip_authorization_check
+  skip_authorize_resource
+
   def add_email_signup
   end
 

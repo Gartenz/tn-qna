@@ -24,10 +24,11 @@
                   .card-body
                     = file[1].content
     .answer-actions
-      - if current_user&.author_of?(answer)
+      - if can? :destroy, answer
         = link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, class: 'btn btn-danger'
+      - if can? :update, answer
         = link_to 'Edit', '#', class: 'btn btn-primary edit-answer-link', data: { answer_id: answer.id}
-      - if current_user&.author_of?(answer.question) && !answer.best
+      - if can? :best, answer
         = link_to 'Best', best_answer_path(answer), remote: true, class: 'btn btn-success', method: :patch
     .hidden id="edit-answer-#{answer.id}"
       = form_with model: answer do |f|

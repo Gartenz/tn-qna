@@ -12,6 +12,10 @@ class User < ApplicationRecord
   has_many :votes
   has_many :authorizations, dependent: :destroy
 
+  def admin?
+    self.admin
+  end
+
   def author_of?(resource)
     self.id == resource.user_id
   end
