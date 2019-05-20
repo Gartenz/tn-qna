@@ -1,7 +1,10 @@
 class AttachmentsController < ApplicationController
   before_action :authenticate_user!
 
-  expose(:attachment) {ActiveStorage::Attachment.find(params[:id])}
+  skip_authorization_check
+  skip_authorize_resource
+
+  expose(:attachment) { ActiveStorage::Attachment.find(params[:id]) }
   expose(:record) { attachment.record }
 
   def destroy

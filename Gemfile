@@ -34,6 +34,7 @@ gem 'omniauth'
 gem "omniauth-oauth2"
 gem 'omniauth-github'
 gem 'omniauth-vkontakte'
+gem 'cancancan'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

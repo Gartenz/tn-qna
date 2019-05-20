@@ -14,26 +14,27 @@
           | New comment:
         = render partial: 'comments/form', locals: { resource: question }
 .row
-  .col-sm-12.col-md-12.col-lg-12
-    | Add an answer
-  .col-sm-12.col-md-12.col-lg-12
-    .answer-errors
-      = render 'shared/errors', resource: answer
-    .new-answer
-      = form_with model: [question, answer] do |f|
-        .form-group
-          = f.label :body
-          = f.text_area :body, class: 'form-control'
-        .form-group
-          = f.label :files
-          = f.file_field :files, multiple: true, direct_upload: true
-        .form-group
-          p Links:
-          = f.fields_for :links do |l|
-            = render 'shared/links_fields', f: l
-          .links
-            = link_to_add_association 'add link', f, :links, partial: 'shared/links_fields'
-        = f.submit 'Add answer', class: 'btn btn-primary'
+  - if can? :create, Answer
+    .col-sm-12.col-md-12.col-lg-12
+      | Add an answer
+    .col-sm-12.col-md-12.col-lg-12
+      .answer-errors
+        = render 'shared/errors', resource: answer
+      .new-answer
+        = form_with model: [question, answer] do |f|
+          .form-group
+            = f.label :body
+            = f.text_area :body, class: 'form-control'
+          .form-group
+            = f.label :files
+            = f.file_field :files, multiple: true, direct_upload: true
+          .form-group
+            p Links:
+            = f.fields_for :links do |l|
+              = render 'shared/links_fields', f: l
+            .links
+              = link_to_add_association 'add link', f, :links, partial: 'shared/links_fields'
+          = f.submit 'Add answer', class: 'btn btn-primary'
 .row
   .col-sm-12.col-md-12.col-lg-12
     .answers

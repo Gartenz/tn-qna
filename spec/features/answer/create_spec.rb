@@ -69,12 +69,8 @@ feature 'User can add answer for question on question page.' do
     scenario "Unauthenticated user can't add answer" do
       visit question_path(question)
 
-      within '.new-answer' do
-        fill_in :Body, with: 'some text'
-        click_on 'Add answer'
-      end
-
-      expect(page).to have_content 'You need to sign in or sign up before continuing.'
+      expect(page).to_not have_content 'Add an answer'
+      expect(page).to_not have_link 'Add answer'
     end
   end
 end

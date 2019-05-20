@@ -4,6 +4,8 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
   after_action :publish_question, only: %i[create]
 
+  skip_authorization_check only: %i[index show]
+  
   expose :questions, -> { Question.all }
   expose :question, -> { params[:id] ? Question.with_attached_files.find(params[:id]) : Question.new }
   expose :answer, -> { question.answers.new }
