@@ -25,7 +25,7 @@ class Ability
     can :create, :all
     can [:update, :destroy], [Question, Answer], user_id: user.id
     can :vote, [Question, Answer] do |object|
-      object.user_id != user.id
+      !user.author_of?(object)
     end
     can :best, Answer, question: { user_id: user.id }
   end
