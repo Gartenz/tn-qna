@@ -16,6 +16,14 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: [] do
+        get :me, on: :collection
+      end
+    end
+  end
+
   get '/users/add_email_signup', to: 'additional_signups#add_email_signup', as: 'add_email_signup'
   post '/users/finish_sign_up', to: 'additional_signups#finish_signup', as: 'finish_signup'
 
@@ -31,4 +39,6 @@ Rails.application.routes.draw do
   end
 
   mount ActionCable.server => '/cable'
+
+
 end
