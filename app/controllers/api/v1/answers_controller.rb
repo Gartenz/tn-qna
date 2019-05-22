@@ -5,7 +5,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def show
-    answer = Answer.find(params['id'])
+    answer = Answer.where(id:params['id']).first
     render json: answer
   end
 end
