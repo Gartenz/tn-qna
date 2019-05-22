@@ -6,6 +6,10 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def show
     @question = Question.find(params['id'])
-    render json: @question
+    if @question
+      render json: @question
+    else
+      head :not_found
+    end
   end
 end
