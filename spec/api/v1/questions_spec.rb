@@ -37,27 +37,12 @@ describe 'Questions API', type: :request do
       it 'contains user object' do
         expect(question_response['user']['id']).to eq question.user.id
       end
-
-      describe 'answers' do
-        let(:answer) { answers.first }
-        let(:answer_response) { question_response['answers'].first }
-
-        it 'return list of questions' do
-          expect(question_response['answers'].size).to eq 3
-        end
-
-        it 'returns all public fields' do
-          %w[id body user_id created_at updated_at].each do |attr|
-            expect(answer_response[attr]).to eq answer.send(attr).as_json
-          end
-        end
-      end
     end
   end
 
   #включает в себя список комментариев, список прикрепленных файлов в виде url и список прикрепленных ссылок
   describe 'GET /api/v1/questions/:id' do
-    let!(:question) { create(:question, :with_all) }
+    let!(:question) { create(:question_with_all_appends) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
 
     it_behaves_like 'API Authorizable' do
@@ -69,7 +54,7 @@ describe 'Questions API', type: :request do
       let(:access_token) { create(:access_token) }
       let(:question_response) { json['question'] }
 
-      before { get api_path, params: { access_token: access_token.token }, headers: headers }
+      before { get api_path, params: { id: question.id, access_token: access_token.token }, headers: headers }
 
       it 'reuturns 200 status' do
         expect(response).to be_successful
