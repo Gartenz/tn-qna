@@ -46,4 +46,5 @@ Rails.application.configure do
 
   config.action_controller.allow_forgery_protection = false
 
+  Rails.application.routes.default_url_options[:host] = 'www.example.com'
 end
