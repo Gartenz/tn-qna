@@ -159,7 +159,7 @@ describe 'Questions API', type: :request do
     end
   end
 
-  describe 'POST /api/v1/questions/:id' do
+  describe 'PATCH /api/v1/questions/:id' do
     let!(:user) { create(:user) }
     let!(:question) { create(:question) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
@@ -178,7 +178,12 @@ describe 'Questions API', type: :request do
       end
 
       it 'creates new question' do
-        expect { post api_path, params: { question: attributes_for(:question), access_token: access_token.token }}.to change(Question, :count).by(1)
+        new_params = {
+          title: "New Title",
+        }
+        patch api_path, params: { question: new_params, access_token: access_token.token }
+        question.reload
+        expect(question.title).to eq new_params[:title]
       end
 
       it 'return Bad Request if no question params sended' do
@@ -190,7 +195,9 @@ describe 'Questions API', type: :request do
         bad_params = { 'titdle': '12312', 'bodt': '123123' }
 
         patch api_path, params: { question: bad_params, access_token: access_token.token }
-        expect(response.status).to eq 400
+
+        question.reload
+        expect(question.title).to_not eq bad_params[:titdle]
       end
     end
   end
