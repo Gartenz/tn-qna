@@ -201,4 +201,35 @@ describe 'Questions API', type: :request do
       end
     end
   end
+
+  describe 'DELETE /api/v1/questions/:id' do
+    let!(:user) { create(:user) }
+    let!(:question) { create(:question) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+      let(:headers) { nil }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      it 'reuturns 200 status' do
+        delete api_path, params: { access_token: access_token.token }
+        expect(response).to be_successful
+      end
+
+      it 'deletes question' do
+        expect { delete api_path, params: { access_token: access_token.token } }.to change(Question, :count).by(-1)
+      end
+
+      it 'return Bad Request if no question found' do
+        bad_path = "/api/v1/questions/-1"
+
+        delete bad_path, params: { access_token: access_token.token }
+        expect(response.status).to eq 400
+      end
+    end
+  end
 end

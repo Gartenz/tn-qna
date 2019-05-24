@@ -1,5 +1,5 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  expose(:question)
+  expose(:question) { params['id'] ? Question.where(id: params['id']).first : Quesiton.new }
 
   def index
     @questions = Question.all
@@ -35,11 +35,18 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     head :bad_request
   end
 
+  def destroy
+    if question
+      question.destroy
+      head :ok
+    else
+      head :bad_request
+    end
+  end
+
   private
 
   def question_params
     params.require(:question).permit(:title, :body)
   end
-
-
 end
