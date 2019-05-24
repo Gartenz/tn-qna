@@ -26,7 +26,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def update
-    byebug
     if question.update(question_params)
       render json: question, location: api_v1_question_url(question)
     else
