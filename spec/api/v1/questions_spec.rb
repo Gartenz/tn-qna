@@ -136,7 +136,6 @@ describe 'Questions API', type: :request do
     context 'authorized' do
       let(:access_token) { create(:access_token) }
 
-
       it 'reuturns 200 status' do
         post api_path, params: { question: attributes_for(:question), access_token: access_token.token }
         expect(response).to be_successful
@@ -155,6 +154,42 @@ describe 'Questions API', type: :request do
         bad_params = { 'titdle': '12312', 'bodt': '123123' }
 
         post api_path, params: { question: bad_params, access_token: access_token.token }
+        expect(response.status).to eq 400
+      end
+    end
+  end
+
+  describe 'POST /api/v1/questions/:id' do
+    let!(:user) { create(:user) }
+    let!(:question) { create(:question) }
+    let(:api_path) { "/api/v1/questions/#{question.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+      let(:headers) { nil }
+    end
+
+    context 'authorized' do
+      let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+
+      it 'reuturns 200 status' do
+        patch api_path, params: { question: attributes_for(:question), access_token: access_token.token }
+        expect(response).to be_successful
+      end
+
+      it 'creates new question' do
+        expect { post api_path, params: { question: attributes_for(:question), access_token: access_token.token }}.to change(Question, :count).by(1)
+      end
+
+      it 'return Bad Request if no question params sended' do
+        patch api_path, params: { access_token: access_token.token }
+        expect(response.status).to eq 400
+      end
+
+      it 'return Bad Request if bad question params sended' do
+        bad_params = { 'titdle': '12312', 'bodt': '123123' }
+
+        patch api_path, params: { question: bad_params, access_token: access_token.token }
         expect(response.status).to eq 400
       end
     end
