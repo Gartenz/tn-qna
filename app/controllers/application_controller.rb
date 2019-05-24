@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :gon_user, unless: :devise_controller?
-
+  protect_from_forgery prepend: true
   check_authorization unless: :devise_controller?
   authorize_resource unless: :devise_controller?
 
