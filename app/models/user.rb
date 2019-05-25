@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :rewards
   has_many :votes
   has_many :authorizations, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   def admin?
     self.admin
