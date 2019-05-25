@@ -3,6 +3,7 @@ require_relative 'concerns/voted_spec'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
+  let!(:question) { create(:question, user: user) }
 
   describe QuestionsController, type: :controller do
     it_behaves_like "voted"
@@ -20,7 +21,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #show' do
-    let(:question) { create(:question) }
     before do
       login(user)
       get :show, params: { id: question }
@@ -63,8 +63,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:question) { create(:question, user: user) }
-
     before { login(question.user) }
 
     context 'with valid attributes' do
@@ -107,8 +105,6 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:question) { create(:question, user: user) }
-
     context 'User tries to delete his own question' do
       before { login(question.user) }
 

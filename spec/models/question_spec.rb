@@ -3,22 +3,22 @@ require_relative 'concerns/votable_spec'
 
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
-  it { should have_many(:links).dependent(:destroy) }
   it { should belong_to(:user) }
   it { should have_one :reward }
-
-  it { should accept_nested_attributes_for :links }
 
   it { should validate_presence_of :title }
   it { should validate_presence_of :body }
 
   describe Question do
     it_behaves_like "votable"
+    it_behaves_like "Model linkable"
+    it_behaves_like "Model filable"
   end
 
+  let!(:user) { create(:user) }
+  let!(:question) { create(:question, user: user) }
+
   describe '#best_answer returns' do
-    let!(:user) { create(:user) }
-    let!(:question) { create(:question, user: user) }
     let!(:answer) { create(:answer, question: question, best: true) }
 
     it 'answer if question have best anwer' do
@@ -32,8 +32,6 @@ RSpec.describe Question, type: :model do
   end
 
   describe '#mark_best' do
-    let!(:user) { create(:user) }
-    let!(:question) { create(:question, user: user) }
     let!(:old_best) { create(:answer, question: question, best: true) }
 
     it 'updates best answer of question with new  best answer' do
@@ -55,9 +53,5 @@ RSpec.describe Question, type: :model do
 
       expect(old_best.best).to eq true
     end
-  end
-
-  it 'have one attached file' do
-    expect(Question.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 end
