@@ -6,7 +6,7 @@ feature 'User can delete links to existed answer', %q{
 } do
   given!(:user) { create(:user) }
   given!(:question) { create(:question) }
-  given!(:answer) { create(:answer, :with_link, question: question, user: user) }
+  given!(:answer) { create(:answer, :with_links, question: question, user: user) }
   given(:simple_url) { 'https://google.com' }
 
   describe 'Authenticated user as author', js: true do
