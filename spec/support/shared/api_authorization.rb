@@ -10,4 +10,11 @@ shared_examples_for 'API Authorizable' do
       expect(response.status).to eq 401
     end
   end
+
+  context 'authorized' do
+    it 'reuturns 200 status' do
+      do_request(method, api_path, params: params, headers: headers)
+      expect(response).to be_successful
+    end
+  end
 end
