@@ -38,6 +38,10 @@ gem 'cancancan'
 gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 gem 'oj'
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'whenever', require: false
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
