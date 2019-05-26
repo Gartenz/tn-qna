@@ -3,8 +3,8 @@ require 'rails_helper'
 describe 'Answer API', type: :request do
   let(:headers) { { 'CONTENT_TYPE' => 'application/json',
                     'ACCEPT' => 'application/json' } }
-  let(:user) { create(:user) }
-  let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+  let!(:user) { create(:user) }
+  let!(:access_token) { create(:access_token, resource_owner_id: user.id) }
   let!(:question) { create(:question) }
 
   describe 'GET /api/v1/questions/:queston_id/answers' do
@@ -136,8 +136,8 @@ describe 'Answer API', type: :request do
     end
   end
 
-  describe 'PATCH /api/v1/questions/:id' do
-    let!(:answer) { create(:answer, question: question) }
+  describe 'PATCH /api/v1/answers/:id' do
+    let!(:answer) { create(:answer, user: user) }
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
 
     it_behaves_like 'API Authorizable' do
@@ -177,7 +177,7 @@ describe 'Answer API', type: :request do
   end
 
   describe 'DELETE /api/v1/answers/:id' do
-    let!(:answer) { create(:answer) }
+    let!(:answer) { create(:answer, user: user) }
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
 
     it_behaves_like 'API Authorizable' do

@@ -1,6 +1,6 @@
 class Api::V1::AnswersController < Api::V1::BaseController
   expose :question
-  expose :answer, -> { params[:id] ? Answer.with_attached_files.where(id: params[:id]).first : Answer.new }
+  expose :answer, -> { params[:id] ? Answer.with_attached_files.find(params[:id]) : Answer.new }
 
   def index
     answers = Question.find(params['question_id']).answers
@@ -35,12 +35,8 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   def destroy
-    if answer
-      answer.destroy
-      head :ok
-    else
-      head :bad_request
-    end
+    answer.destroy
+    head :ok
   end
 
   private

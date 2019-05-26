@@ -12,7 +12,7 @@ shared_examples_for 'API Authorizable' do
   end
 
   context 'authorized' do
-    it 'reuturns 200 status' do
+    it 'returns 200 status' do
       do_request(method, api_path, params: params, headers: headers)
       expect(response).to be_successful
     end

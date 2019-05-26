@@ -1,8 +1,14 @@
-class Api::V1::BaseController < ApplicationController
+class Api::V1::BaseController < ActionController::Base
   before_action :doorkeeper_authorize!
+  check_authorization
+  authorize_resource 
 
   rescue_from CanCan::AccessDenied do |exception|
-    head :unauthorized
+    head :forbidden
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    head :bad_request
   end
 
   private
