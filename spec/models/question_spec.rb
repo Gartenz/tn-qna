@@ -1,5 +1,6 @@
 require 'rails_helper'
 require_relative 'concerns/votable_spec'
+require_relative 'concerns/subscribable_spec'
 
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
@@ -11,6 +12,7 @@ RSpec.describe Question, type: :model do
 
   describe Question do
     it_behaves_like "votable"
+    it_behaves_like 'subscribable'
     it_behaves_like "Model linkable"
     it_behaves_like "Model filable"
   end

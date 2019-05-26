@@ -14,6 +14,12 @@ Rails.application.routes.draw do
     resources :comments, only: :create
   end
 
+  concern :subscribable do
+    member do
+      patch :subscribe
+    end
+  end
+
   concern :votable do
     member do
       patch :vote_up
@@ -40,7 +46,7 @@ Rails.application.routes.draw do
   resources :rewards, only: %i[index]
   resources :attachments, only: %i[destroy]
 
-  resources :questions, concerns: [:votable, :commentable] do
+  resources :questions, concerns: [:votable, :commentable, :subscribable] do
     resources :answers, shallow: true, concerns: [:votable, :commentable] do
       member do
         patch :best
