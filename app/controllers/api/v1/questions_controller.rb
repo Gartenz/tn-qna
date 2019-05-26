@@ -1,5 +1,5 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  expose(:question) { params['id'] ? Question.where(id: params['id']).first : Quesiton.new }
+  expose(:question) { params['id'] ? Question.find(params['id']) : Quesiton.new }
 
   def index
     @questions = Question.all
@@ -36,12 +36,8 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def destroy
-    if question
-      question.destroy
-      head :ok
-    else
-      head :bad_request
-    end
+    question.destroy
+    head :ok
   end
 
   private
