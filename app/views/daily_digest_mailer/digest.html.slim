@@ -1,2 +1,8 @@
-h1 DailyDigest#digest
-p = @greeting + ", find me in app/views/daily_digest_mailer/digest.html.slim"
+h1 Questions created in previous day:
+- if @questions.count.zero?
+  p
+    | No questions was created in previous day
+- else
+  - @questions.each do |question|
+    p
+      = link_to question.title, question_path(question)

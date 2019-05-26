@@ -1,3 +1,8 @@
-' DailyDigest#digest
-= "\r\n" * 2
-' #{@greeting + ", find me in app/views/daily_digest_mailer/digest.text.slim"}
+' Questions created in previous day:
+- if @questions.count.zero?
+  ' No questions was created in previous day
+- else
+  - @questions.each do |question|
+    ' #{question.title}
+    ' #{question_url(question)}
+    ' #######################################################

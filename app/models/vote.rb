@@ -3,5 +3,5 @@ class Vote < ApplicationRecord
   belongs_to :votable, polymorphic: true
 
   validates :votable, presence: true
-  validates :user_id, uniqueness: { scpoe: [:votable_type, :votable_id] }
+  validates :user_id, uniqueness: { scope: [:votable_type, :votable_id] }
 end
