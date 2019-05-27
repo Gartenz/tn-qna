@@ -2,19 +2,20 @@ module Subscribable
   extend ActiveSupport::Concern
 
   included do
-    has_many :subscribers, as: :subscribable, dependent: :destroy,  class_name: "Subscription"
+    has_many :subscriptions, as: :subscribable, dependent: :destroy
+    has_many :subscribers, through: :subscriptions, source: :user
   end
 
   def subscribed?(user)
-    subscribers.exists?(user: user)
+    subscriptions.exists?(user: user)
   end
 
   def subscribe(user)
     transaction do
       if !subscribed? user
-        self.subscribers.create!(user: user)
+        self.subscriptions.create!(user: user)
       else
-        subscribers.find_by(user: user).destroy
+        subscriptions.find_by(user: user).destroy
       end
     end
   end

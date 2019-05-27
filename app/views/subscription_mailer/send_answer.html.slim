@@ -1,0 +1,5 @@
+h1 New answer for question:
+p
+  = @answer.body
+p
+  = link_to @answer.question.title, question_url(@answer.question)
