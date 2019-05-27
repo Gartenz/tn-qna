@@ -1,9 +1,9 @@
 <% if comment.persisted? %>
   node = ''
-  <% if is_question?(comment.commentable) %>
+  <% if question?(comment.commentable) %>
     node = '.question-comments'
   <% end %>
-  <% if is_answer?(comment.commentable) %>
+  <% if answer?(comment.commentable) %>
     node = '#answer-<%= comment.commentable_id %>-comments'
   <% end %>
   $(node).append('<%= j render comment %>')

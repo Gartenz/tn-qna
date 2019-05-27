@@ -28,10 +28,7 @@
       - if can? :destroy, question
         = link_to 'Delete', question_path(question), class: 'btn btn-danger', method: :delete
         = link_to 'Edit', '#', class: 'btn btn-primary edit-question-link'
-      - if can? :subscribe, question
-        - if question.subscribed?(current_user)
-          = link_to 'Unsubscribe', subscribe_question_path(question), class: 'btn btn-primary', method: :patch, remote: true, data: { type: :json }
-        - else
-          = link_to 'Subscribe', subscribe_question_path(question), class: 'btn btn-primary', method: :patch, remote: true, data: { type: :json }
+      .question-subscribe
+        = render 'shared/subscribe', resource: question
     .question-form.hidden
       = render 'form'

@@ -1,8 +1,8 @@
 var node = ''
-<% if is_question?(record) %>
+<% if question?(record) %>
   node = '.question-files'
 <% end %>
-<% if is_answer?(record) %>
+<% if answer?(record) %>
   node = '.answer-<%= record.id %>-files'
 <% end %>
 $(node).html('<%= render partial: "shared/file", collection: record.files %>')
