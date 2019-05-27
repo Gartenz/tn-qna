@@ -12,11 +12,11 @@ shared_examples_for 'subscribed' do
       let(:object) { create(controller.controller_name.classify.downcase.to_sym) }
 
       it "it adds subscriber" do
-        expect { patch :subscribe, params: { id: object.id } }.to change(object.subscribers, :count).by(1)
+        expect { patch :subscribe, params: { id: object.id }, format: :js }.to change(object.subscribers, :count).by(1)
       end
 
       it "it adds subscriptions to user" do
-        expect { patch :subscribe, params: { id: object.id } }.to change(user.subscriptions, :count).by(1)
+        expect { patch :subscribe, params: { id: object.id }, format: :js }.to change(user.subscriptions, :count).by(1)
       end
     end
 
@@ -25,11 +25,11 @@ shared_examples_for 'subscribed' do
       let(:object) { subscription.subscribable }
 
       it "it deletes subscriber" do
-        expect { patch :subscribe, params: { id:  object.id } }.to change(object.subscribers, :count).by(-1)
+        expect { patch :subscribe, params: { id:  object.id }, format: :js }.to change(object.subscribers, :count).by(-1)
       end
 
       it "it deletes subscriptions to user" do
-        expect { patch :subscribe, params: { id:  object.id } }.to change(user.subscriptions, :count).by(-1)
+        expect { patch :subscribe, params: { id:  object.id }, format: :js }.to change(user.subscriptions, :count).by(-1)
       end
     end
   end

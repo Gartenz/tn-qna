@@ -6,19 +6,25 @@ feature 'Subscribe', %q{
 } do
   given(:question) { create(:question) }
 
-  background do
-    visit question_path(question)
-  end
 
   scenario 'Unauthenticated user wants to subscribe' do
+    visit question_path(question)
+
     within '.card' do
       expect(page).to_not have_link 'Subscribe'
     end
   end
 
-  context 'Authenticated user' do
+  context 'Authenticated user', js: true do
+    given(:user) { create(:user) }
+
+    background do
+      sign_in user
+      visit question_path(question)
+    end
+    
     scenario 'tries to subscribe' do
-      within '.card' do
+      within '.question-body' do
         click_on 'Subscribe'
 
         expect(page).to_not have_link 'Unsubscribe'
@@ -26,10 +32,10 @@ feature 'Subscribe', %q{
     end
 
     scenario 'tries to unsubscribe' do
-      within '.card' do
+      within '.question-body' do
         click_on 'Subscribe'
         click_on 'Unsubscribe'
-        
+
         expect(page).to_not have_link 'Suscribe'
       end
     end

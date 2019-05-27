@@ -1,9 +1,9 @@
 module ApplicationHelper
-  def is_question?(record)
+  def question?(record)
     record.is_a?(Question)
   end
 
-  def is_answer?(record)
+  def answer?(record)
     record.is_a?(Answer)
   end
 end
