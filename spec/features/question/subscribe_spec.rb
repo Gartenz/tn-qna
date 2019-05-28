@@ -6,7 +6,6 @@ feature 'Subscribe', %q{
 } do
   given(:question) { create(:question) }
 
-
   scenario 'Unauthenticated user wants to subscribe' do
     visit question_path(question)
 
@@ -19,6 +18,7 @@ feature 'Subscribe', %q{
     given(:user) { create(:user, :confirmed) }
 
     background do
+      clear_emails
       sign_in user
       visit question_path(question)
     end
@@ -49,7 +49,6 @@ feature 'Subscribe', %q{
         fill_in :Body, with: body
         click_on 'Add answer'
       end
-      sleep(1)
 
       open_email(user.email)
 

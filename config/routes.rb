@@ -46,7 +46,9 @@ Rails.application.routes.draw do
   resources :rewards, only: %i[index]
   resources :attachments, only: %i[destroy]
 
-  resources :questions, concerns: [:votable, :commentable, :subscribable] do
+  resources :questions, concerns: [:votable, :commentable] do
+    resources :subscriptions, only: %i[create destroy], shallow:true
+
     resources :answers, shallow: true, concerns: [:votable, :commentable] do
       member do
         patch :best

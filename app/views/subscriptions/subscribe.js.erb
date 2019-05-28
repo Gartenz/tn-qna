@@ -1,0 +1,3 @@
+<% if question?(resource) %>
+  $('.question-subscribe').html('<%= render 'shared/subscribe', resource: resource %>')
+<% end %>

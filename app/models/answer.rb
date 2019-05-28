@@ -12,12 +12,12 @@ class Answer < ApplicationRecord
 
   validates :body, :question, presence: true
 
-  after_create :send_email_notification
+  after_commit :send_email_notification
 
   private
 
   def send_email_notification
-    SubscribersNotifyJob.perform_now(self)
+    SubscribersNotifyJob.perform_later(self)
   end
 
 end
