@@ -7,7 +7,7 @@ shared_examples_for 'subscribable' do
 
   describe '#subscribed?' do
     it 'returns true if user already subscribed' do
-      object.subscribers.create(user: user)
+      object.subscribe(user)
 
       expect(object.subscribed?(user)).to eq true
     end
@@ -19,13 +19,7 @@ shared_examples_for 'subscribable' do
 
   describe '#subscribe' do
     it 'creates subscription if user is not subscribed' do
-      expect{ object.subscribe(user) }.to change(Subscription, :count).by(1)
-    end
-
-    it 'deletes subscription if user subscribed' do
-      object.subscribe(user)
-
-      expect{ object.subscribe(user) }.to change(Subscription, :count).by(-1)
+      expect{ object.subscribe(user) }.to change(Subscription, :count).by(2)
     end
   end
 end

@@ -6,6 +6,5 @@ RSpec.describe Subscription, type: :model do
   it { should belong_to :user }
   it { should belong_to :subscribable }
 
-  it { should validate_presence_of :subscribable }
   it { should validate_uniqueness_of(:user_id).scoped_to(:subscribable_type, :subscribable_id) }
 end

@@ -1,13 +1,11 @@
 require 'rails_helper'
 require_relative 'concerns/voted_spec'
-require_relative 'concerns/subscribed_spec'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let!(:question) { create(:question, user: user) }
 
   it_behaves_like "voted"
-  it_behaves_like "subscribed"
 
   describe 'GET #new' do
     before do

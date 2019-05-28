@@ -24,7 +24,8 @@ class Ability
     guest_abilities
     can :create, :all
     can [:update, :destroy], [Question, Answer], user_id: user.id
-    can :subscribe, [Question]
+    can [:create, :destroy], [Subscription]
+    
     can :vote, [Question, Answer] do |object|
       !user.author_of?(object)
     end

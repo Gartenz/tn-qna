@@ -1,8 +1,0 @@
-var node = ''
-<% if question?(@subscribable) %>
-  node = '.question-subscribe'
-<% end %>
-<% if answer?(@subscribable) %>
-  node = '.answer-<%= record.id %>-subscribe'
-<% end %>
-$(node).html('<%= render 'shared/subscribe', resource: @subscribable %>')

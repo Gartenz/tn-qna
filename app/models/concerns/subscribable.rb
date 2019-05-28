@@ -4,6 +4,8 @@ module Subscribable
   included do
     has_many :subscriptions, as: :subscribable, dependent: :destroy
     has_many :subscribers, through: :subscriptions, source: :user
+
+    after_create :subscribe_author
   end
 
   def subscribed?(user)
@@ -11,12 +13,14 @@ module Subscribable
   end
 
   def subscribe(user)
-    transaction do
-      if !subscribed? user
-        self.subscriptions.create!(user: user)
-      else
-        subscriptions.find_by(user: user).destroy
-      end
+    if !subscribed?(user)
+      self.subscriptions.create!(user: user)
     end
+  end
+
+  private
+
+  def subscribe_author
+    self.subscribe(user)
   end
 end
