@@ -1,15 +1,18 @@
 class SubscriptionsController < ApplicationController
+  expose(:question)
+
   def create
-    question = Question.find(params['question_id'])
+    @exposed_question = Question.find(params['question_id'])
     if !question.subscribed?(current_user)
       question.subscribe(current_user)
-      render template: "subscriptions/subscribe", locals: { resource: question }
+      render :subscribe
     end
   end
 
   def destroy
     subscription = Subscription.find(params['id'])
     subscription.delete
-    render template: "subscriptions/subscribe", locals: { resource: subscription.subscribable }
+    @exposed_question = subscription.subscribable
+    render :subscribe
   end
 end
