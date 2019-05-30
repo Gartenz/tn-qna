@@ -41,6 +41,8 @@ gem 'oj'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'whenever', require: false
+gem 'mysql2'
+gem 'thinking-sphinx'
 
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
