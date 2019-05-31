@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :comment do
     user { create(:user) }
-    body { "MyString" }
+    body
 
     trait :for_question do
       association(:commentable, factory: :question)
