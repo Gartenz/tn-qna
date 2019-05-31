@@ -42,6 +42,7 @@ Rails.application.routes.draw do
 
   get '/users/add_email_signup', to: 'additional_signups#add_email_signup', as: 'add_email_signup'
   post '/users/finish_sign_up', to: 'additional_signups#finish_signup', as: 'finish_signup'
+  post '/search', to: 'searches#search', as: 'search'
 
   resources :rewards, only: %i[index]
   resources :attachments, only: %i[destroy]
