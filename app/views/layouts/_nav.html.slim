@@ -11,3 +11,11 @@ nav.navbar.navbar-light.bg-light
     - else
       li.nav-item
         = link_to 'Sign in', new_user_session_path, class: 'nav-link'
+    li.nav-item
+      span.navbar-text
+        | Search in:
+    li.nav-item
+      = form_with url: search_path, local: true, class: 'form-inline' do |f|
+        = f.select :search_type, search_types, {} ,{ class: 'custom-select' }
+        = f.text_field :search, class: 'form-control'
+        = f.submit 'Search', class: 'btn btn-outline-primary'

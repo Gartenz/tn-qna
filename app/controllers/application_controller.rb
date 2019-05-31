@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   check_authorization unless: :devise_controller?
   authorize_resource unless: :devise_controller?
 
+  expose(:search_types) { [['All', nil], ['Questions', :question], ['Answers', :answer],['Comments', :comment], ['Users', :user]] }
+
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.json { head :forbidden, content_type: 'text/html' }
