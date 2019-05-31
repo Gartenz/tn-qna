@@ -14,7 +14,7 @@ nav.navbar.navbar-light.bg-light
     li.nav-item
       span.navbar-text
         | Search in:
-    li.nav-item
+    li.nav-item.search
       = form_with url: search_path, local: true, class: 'form-inline' do |f|
         = f.select :search_type, search_types, {} ,{ class: 'custom-select' }
         = f.text_field :search, class: 'form-control'

@@ -4,7 +4,7 @@ class SearchesController < ApplicationController
 
   expose(:results) { [] }
   def search
-    @exposed_results = ThinkingSphinx.search params['search'], classes: get_classes
+    @exposed_results = ThinkingSphinx.search Riddle::Query.escape(params['search']), classes: get_classes
   end
 
   private

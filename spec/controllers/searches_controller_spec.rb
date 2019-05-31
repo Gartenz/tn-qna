@@ -56,9 +56,54 @@ RSpec.describe SearchesController, type: :controller do
         post :search, params: params
         expect(answers.count).to eq 2
       end
+
+      it 'returns object tha contains string' do
+        objects = [answers.first, create(:answer, body: answers.first.body)]
+        params[:search] = "#{answers.first.body}"
+        expect(ThinkingSphinx).to receive(:search).with(answers.first.body, { classes: [Answer] }).and_return(objects)
+        post :search, params: params
+        expect(objects.count).to eq 2
+      end
     end
 
-    context 'search in comments'
-    context 'search in users'
+    context 'search in comments' do
+      before do
+        params[:search_type] = 'comment'
+      end
+
+      it 'return all answers if search string empty' do
+        expect(ThinkingSphinx).to receive(:search).with("", { classes: [Comment] }).and_return(comments)
+        post :search, params: params
+        expect(comments.count).to eq 3
+      end
+
+      it 'returns object tha contains string' do
+        objects = [comments.first]
+        params[:search] = "#{comments.first.body}"
+        expect(ThinkingSphinx).to receive(:search).with(comments.first.body, { classes: [Comment] }).and_return(objects)
+        post :search, params: params
+        expect(objects.count).to eq 1
+      end
+    end
+
+    context 'search in users' do
+      before do
+        params[:search_type] = 'user'
+      end
+
+      it 'return all answers if search string empty' do
+        expect(ThinkingSphinx).to receive(:search).with("", { classes: [User] }).and_return(users)
+        post :search, params: params
+        expect(users.count).to eq 2
+      end
+
+      it 'returns object tha contains string' do
+        objects = [users.first]
+        params[:search] = "#{users.first.email}"
+        expect(ThinkingSphinx).to receive(:search).with(users.first.email, { classes: [User] }).and_return(objects)
+        post :search, params: params
+        expect(objects.count).to eq 1
+      end
+    end
   end
 end

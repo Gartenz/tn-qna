@@ -4,23 +4,21 @@ h1 Search result:
     .border.border-light.mb-1
       | Question:
       p
-        | Title:
-        = link_to object.title, question_path(object)
+        ' Title: #{link_to object.title, question_path(object)}
       p
         = object.body
   - if answer?(object)
     .border.border-light.mb-1
       | Answer:
       p
-        | Question title:
-        = link_to object.question.title, question_path(object.question)
+        ' Question title: #{link_to object.question.title, question_path(object.question)}
       p
         = object.body
   - if comment?(object)
     .border.border-light.mb-1
       | Comment:
       p
-        | Question title:
+        | Question title: 
         - if answer?(object.commentable)
           = link_to object.commentable.question.title, question_path(object.commentable.question)
         - else
