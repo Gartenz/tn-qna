@@ -3,15 +3,14 @@ class SearchesController < ApplicationController
   skip_authorize_resource
 
   expose(:results) { [] }
+
   def search
-    @exposed_results = ThinkingSphinx.search Riddle::Query.escape(params['search']), classes: get_classes
+    @exposed_results = Services::Search.new.search(search_params.to_h)
   end
 
   private
 
-  def get_classes
-   return nil if params['search_type'].empty?
-
-   [params['search_type'].capitalize.constantize]
+  def search_params
+    params.require(:search).permit(:search_type, :search_string)
   end
 end
