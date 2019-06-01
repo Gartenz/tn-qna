@@ -33,3 +33,4 @@
 
 /config/*.sphinx.conf
 /db/sphinx
+config/thinking_sphinx.yml
