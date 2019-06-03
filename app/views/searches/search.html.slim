@@ -1,11 +1,4 @@
 h1 Search result:
 - results.each do |object|
   .border-bottom.mb-1
-    - if question?(object)
-      = render 'searches/question', question: object
-    - if answer?(object)
-      = render 'searches/answer', answer: object
-    - if comment?(object)
-      = render 'searches/comment', comment: object
-    - if user?(object)
-      = render 'searches/user', user: object
+    = render "searches/#{object.class.name.downcase}", resource: object

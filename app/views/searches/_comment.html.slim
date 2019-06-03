@@ -1,9 +1,9 @@
 | Comment:
 p
   | Question title:
-  - if answer?(comment.commentable)
-    = link_to comment.commentable.question.title, question_path(comment.commentable.question)
+  - if answer?(resource.commentable)
+    = link_to resource.commentable.question.title, question_path(resource.commentable.question)
   - else
-    = link_to comment.commentable.title, question_path(comment.commentable)
+    = link_to resource.commentable.title, question_path(resource.commentable)
 p
-  = comment.body
+  = resource.body
