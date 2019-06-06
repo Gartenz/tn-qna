@@ -1,3 +1,4 @@
-. id="#{comment.commentable_type.downcase}-#{comment.commentable_id}-comment-#{comment.id}"
-  p
-    = "#{comment.user.email}: #{comment.body}"
+- cache comment do
+  . id="#{comment.commentable_type.downcase}-#{comment.commentable_id}-comment-#{comment.id}"
+    p
+      = "#{comment.user.email}: #{comment.body}"

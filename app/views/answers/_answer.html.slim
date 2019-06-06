@@ -1,28 +1,29 @@
 - if answer.persisted?
   = content_tag :div, data:{answer_id: answer.id}, class: "border mt-2 mb-2 #{"best-answer" if answer.best}"
-    = content_tag :span, class: "answer-rating-#{answer.id}"
-      =content_tag :span, class: "answer-score-#{answer.id} badge badge-secondary"
-        = answer.score
-      = render 'shared/vote', resource: answer
-    .
-      = answer.body
-      - if answer.files.attached?
-        = content_tag :div, class: "answer-#{answer.id}-files"
-          table
-            = render partial: 'shared/file', collection: answer.files
-      p Links:
-      ul
-        - answer.links.each do |link|
-          li
-            = link_to link.name, link.url
-          - if is_gist?(link)
-            .card-group
-              - get_gist_files(link).each do |file|
-                .card.bg-light
-                  .card-header
-                    = file[1].filename
-                  .card-body
-                    = file[1].content
+    - cache answer do
+      = content_tag :span, class: "answer-rating-#{answer.id}"
+        =content_tag :span, class: "answer-score-#{answer.id} badge badge-secondary"
+          = answer.score
+        = render 'shared/vote', resource: answer
+      .
+        = answer.body
+        - if answer.files.attached?
+          = content_tag :div, class: "answer-#{answer.id}-files"
+            table
+              = render partial: 'shared/file', collection: answer.files
+        p Links:
+        ul
+          - answer.links.each do |link|
+            li
+              = link_to link.name, link.url
+            - if is_gist?(link)
+              .card-group
+                - get_gist_files(link).each do |file|
+                  .card.bg-light
+                    .card-header
+                      = file[1].filename
+                    .card-body
+                      = file[1].content
     .answer-actions
       - if can? :destroy, answer
         = link_to 'Delete answer', answer_path(answer), remote: true, method: :delete, class: 'btn btn-danger'

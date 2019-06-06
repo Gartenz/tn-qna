@@ -1,18 +1,19 @@
 .row
-  .col-sm-12.col-md-12.col-lg-12
-    .question-errors
-      = render 'shared/errors', resource: answer
-    .question
-      = render 'question_card'
-    p
-      | Comments:
-    .question-comments
-      = render question.comments
-    .new-question-comments
-      - if current_user
-        p
-          | New comment:
-        = render partial: 'comments/form', locals: { resource: question }
+  - cache question do
+    .col-sm-12.col-md-12.col-lg-12
+      .question-errors
+        = render 'shared/errors', resource: question
+      .question
+        = render 'question_card'
+      p
+        | Comments:
+      .question-comments
+        = render question.comments
+      .new-question-comments
+        - if current_user
+          p
+            | New comment:
+          = render partial: 'comments/form', locals: { resource: question }
 .row
   - if can? :create, Answer
     .col-sm-12.col-md-12.col-lg-12

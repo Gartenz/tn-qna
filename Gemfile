@@ -44,7 +44,7 @@ gem 'whenever', require: false
 gem 'mysql2'
 gem 'thinking-sphinx'
 gem 'unicorn'
-
+gem 'redis-rails'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
